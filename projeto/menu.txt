@@ -1,0 +1,14 @@
+
+
++-----+-----------------------------------------------------+
+| [1] | Carregar memoria de instrucoes (.mem)               |
+| [2] | Carregar memória de Dados (.dat)                    |
+| [3] | Imprimir memórias (instruções e dados)              |
+| [4] | Imprimir banco de registradores                     |
+| [5] | Imprimir todo simulador (registradores de memorias) |
+| [6] | Salvar .asm                                         |
+| [7] | Salvar .dat                                         |
+| [8] | Executa Programa (run)                              |
+| [9] | Executa uma instrução (Step)                        |
+| [0] | Volta uma instrução (Back)                          |
++-----+-----------------------------------------------------+
