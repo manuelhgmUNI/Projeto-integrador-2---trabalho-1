@@ -1,5 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
+
+int leitura_binario(char *bin, int inicio, int final, int sinal);
+
 
 int main()
 {
@@ -25,4 +29,50 @@ int main()
     
 
     FILE *Mem_ins = fopen("memoria1.mem", "r");
+
+    fgets(instrução->total, 17, Mem_ins);
+    printf("%s\n", instrução->total);
+
+    instrução->opcode = leitura_binario(instrução->total, 0, 3, 0);
+    printf("opcode: %i\n", instrução->opcode);
+}
+
+int leitura_binario(char *bin, int inicio, int final, int sinal)
+{
+
+    int resultado = 0, tamanho = (final-inicio);
+    if (sinal == 0)
+    {
+        for (int i = inicio, j = tamanho; i <= final; i++, j-- )
+        {
+            int temp = bin[i];
+            if (bin[i] == '1')
+                resultado += (1 << j);
+        }
+    }
+    else if (sinal == 1)
+    {
+        if (bin[inicio] == 0)
+        {
+            for (int i = inicio, j = 0; i <= final; i++, j++ )
+                if (bin[i] == 1)
+                    resultado += (1 << j);
+        }
+        else if (bin[inicio] == 1)
+        {
+            resultado = 1;
+            for (int i = inicio, j = 0; i <= final; i++, j++ )
+                if (bin[i] == 0)
+                    resultado += (1 << j);
+        }
+        
+        /*
+        char *nbin = NULL;
+        nbin = malloc((tamanho+1)*sizeof(*nbin));
+
+        free(nbin);
+        nbin = NULL;
+        */
+    }
+    return resultado;
 }
