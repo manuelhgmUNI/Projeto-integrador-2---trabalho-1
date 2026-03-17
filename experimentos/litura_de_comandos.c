@@ -37,25 +37,57 @@ int main()
                 1000 => BEQ => 8
                 0010 => J => 2
                 */
-               
+
     FILE *Mem_ins = fopen("memoria1.mem", "r");
-
-    fgets(instrução->total, 17, Mem_ins);
-    printf("%s\n", instrução->total);
-
-    instrução->opcode = leitura_binario(instrução->total, 0, 3, 0);
-    printf("opcode: %i\n", instrução->opcode);
+    int linhas = 0;
     
-    instrução->rs = leitura_binario(instrução->total, 4, 6, 0);
+    do
+    {
+        char aventureiro = '\0', ultimo = '\0';
 
-    instrução->rt = leitura_binario(instrução->total, 7, 9, 0);
+        while ((aventureiro = fgetc(Mem_ins))!= EOF)
+        {
+            if (aventureiro == '\n')
+                linhas += 1;
+        }
+        if (aventureiro != EOF)
+            ultimo = aventureiro;
+        if(ultimo !=  '\n' && ultimo != '\0')
+            linhas += 1;
 
-    instrução->rd = leitura_binario(instrução->total, 10, 12, 0);
+    } while (0);
+    
+    instrução = (struct str_instrucao *) malloc(linhas * sizeof(*instrução));
 
-    printf("rs: %i\nrt: %i\nrd: %i\n", instrução->rs, instrução->rt, instrução->rd);
+    fseek(Mem_ins, 0, SEEK_SET);
 
-    instrução->immediato = leitura_binario(instrução->total, 10, 15, 1);
-    printf("imediato: %i\n", instrução->immediato);
+    for (int i = 0 ; i <= linhas; i++)
+    {
+        fgets(instrução[i].total, 17, Mem_ins);
+        int c;
+        c = fgetc(Mem_ins);
+        
+        instrução[i].opcode = leitura_binario(instrução[i].total, 0, 3, 0);
+        instrução[i].rs = leitura_binario(instrução[i].total, 4, 6, 0);
+        instrução[i].rt = leitura_binario(instrução[i].total, 7, 9, 0);
+        instrução[i].rd = leitura_binario(instrução[i].total, 10, 12, 0);
+        instrução[i].funct = leitura_binario(instrução[i].total, 13, 15, 0);
+        instrução[i].immediato = leitura_binario(instrução[i].total, 10, 15, 1);
+        instrução[i].addr = leitura_binario(instrução[i].total, 9, 15, 0);
+        
+        if (instrução[i].opcode == 0)
+        instrução[i].tipo = 1;
+        else if (instrução[i].opcode == 4 || instrução[i].opcode == 8 || instrução[i].opcode == 11 || instrução[i].opcode == 15)
+        instrução[i].tipo = 2;
+        else if (instrução[i].opcode == 2)
+        instrução[i].tipo = 3;
+
+        printf("\n'%s'\n", instrução[i].total);
+           
+        printf("opcode: %i\nrs: %i | rt: %i | rd: %i\nfunct: %i | imediato: %i | addr: %i | tipo: %i\n", instrução[i].opcode, instrução[i].rs, instrução[i].rt, instrução[i].rd, instrução[i].funct, instrução[i].immediato, instrução[i].addr, instrução[i].tipo);
+    }
+    
+    free(instrução);
 }
 
 int leitura_binario(char *bin, int inicio, int final, int sinal)
