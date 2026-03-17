@@ -39,7 +39,7 @@ int main()
                 */
 
     FILE *Mem_ins = fopen("memoria1.mem", "r");
-    int linhas = 0;
+    int linhas = 1;
     
     do
     {
@@ -61,7 +61,7 @@ int main()
 
     fseek(Mem_ins, 0, SEEK_SET);
 
-    for (int i = 0 ; i <= linhas; i++)
+    for (int i = 0 ; i < linhas; i++)
     {
         fgets(instrução[i].total, 17, Mem_ins);
         int c;
@@ -82,7 +82,7 @@ int main()
         else if (instrução[i].opcode == 2)
         instrução[i].tipo = 3;
 
-        printf("\n'%s'\n", instrução[i].total);
+        printf("\n%s\n", instrução[i].total);
            
         printf("opcode: %i\nrs: %i | rt: %i | rd: %i\nfunct: %i | imediato: %i | addr: %i | tipo: %i\n", instrução[i].opcode, instrução[i].rs, instrução[i].rt, instrução[i].rd, instrução[i].funct, instrução[i].immediato, instrução[i].addr, instrução[i].tipo);
     }
