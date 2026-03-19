@@ -4,7 +4,7 @@
 int leitura_binario(char *bin, int inicio, int final, int sinal);
 
 
-int main()
+int leitura_memoria(void *instrucao)
 {
     enum tipos_de_instrução
     {
