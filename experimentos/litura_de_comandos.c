@@ -130,3 +130,7 @@ int leitura_binario(char *bin, int inicio, int final, int sinal)
     }
     return resultado;
 }
+
+
+
+//comentario aleatorio
