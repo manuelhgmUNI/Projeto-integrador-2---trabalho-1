@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<math.h>
+
 
 int leitura_binario(char *bin, int inicio, int final, int sinal);
 

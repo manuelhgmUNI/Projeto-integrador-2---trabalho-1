@@ -18,7 +18,7 @@ int main()
         uint16_t instrucao_bruta; //unsigned int 16 bits para instrução
         char total_string[18];
 
-        uint16_t opcode;    // 0-3  (4 bits)
+        uint16_t opcode;    // 15-12  (4 bits)
         uint16_t rs;        // 4-6  (3 bits)
         uint16_t rt;        // 7-9  (3 bits)
         uint16_t rd;        // 10-12 (3 bits)
