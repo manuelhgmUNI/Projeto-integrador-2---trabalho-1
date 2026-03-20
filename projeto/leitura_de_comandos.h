@@ -1,8 +1,11 @@
-#ifdef leitura_de_comandos_H
-#define leitura_de_comandos_H
+#include<stdio.h>
+#include<stdlib.h>
 
-    #include<stdio.h>
-    #include<stdlib.h>
+
+#ifndef leitura_de_comandos_h
+#define leitura_de_comandos_h
+
+
     enum tipos_de_instrução
     {
         r = 1,
@@ -10,7 +13,7 @@
         j = 3,
 
     };
-    struct str_instrucao
+    typedef struct str_instrucao
     {
         enum tipos_de_instrução tipo;
         char total[17];
@@ -21,6 +24,6 @@
         int funct; // 13-15
         int immediato; // 10-15
         int addr; //endereço do jump
-    }
+    }str_i;
 
 #endif
