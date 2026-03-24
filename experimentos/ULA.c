@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+//removi main pra nao dar conflito, estava dando conflito na hora de compilar
 typedef enum {
     AND,
     OR,
@@ -11,44 +12,49 @@ typedef enum {
 } ULAOp;
 
 typedef struct {
-    int resultado;
+    signed char resultado; // com sinal ao inves de int
     int zero;
+    int overflow;          // overflow caso ultrapassa -128 a 127
 } ResultadoULA;
 
-ResultadoULA ula(int A, int B, ULAOp operacao);
-
-int main() {
-    
-    return 0;
-}
-
-ResultadoULA ula(int A, int B, ULAOp operacao) {
+ResultadoULA ula(signed char A, signed char B, ULAOp operacao) {
     ResultadoULA res;
+    res.overflow = 0;
+    int temp_res = 0; 
 
     switch (operacao) {
         case AND:
-            res.resultado = A & B;
+            temp_res = A & B;
             break;
 
         case OR:
-            res.resultado = A | B;
+            temp_res = A | B;
             break;
 
         case ADD:
-            res.resultado = A + B;
+            temp_res = A + B;
             break;
 
         case SUB:
-            res.resultado = A - B;
+            temp_res = A - B;
             break;
 
         case SLT:
             if (A < B)
-                res.resultado = 1;
+                temp_res = 1;
             else
-                res.resultado = 0;
+                temp_res = 0;
             break;
     }
+
+    if (operacao == ADD || operacao == SUB) {
+        if (temp_res > 127 || temp_res < -128) {
+            res.overflow = 1;
+        }
+    }
+
+    res.resultado = (signed char)temp_res; 
+    
     if (res.resultado == 0)
         res.zero = 1;
     else
