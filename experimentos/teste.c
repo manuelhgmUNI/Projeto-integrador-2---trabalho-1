@@ -7,6 +7,8 @@ int main()
 {
     typ_stt *teste = NULL;
     typ_ins_m *insteste = NULL;
+    teste = (typ_stt *) malloc(sizeof(typ_stt));
+
 
     int menu;
     int flag = 0;
@@ -22,7 +24,7 @@ int main()
             break;
             case 2:
                 teste = decodificado_bit_bit(teste);
-                flag = 1;
+                flag = 1;   
             break;
 
             case 3:

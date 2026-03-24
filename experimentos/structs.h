@@ -43,7 +43,7 @@
         int8_t $[8];
     }typ_reg;
 
-    typedef struct state
+    typedef struct str_state
     {
         //typ_ins_m instrucao_m;
         typ_ins_t *instrucao_t;

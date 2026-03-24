@@ -16,5 +16,8 @@
     // ULA
     typ_ulaR ula(int A, int B, typ_ulaOp operacao);
 
+    // controlador
+    typ_stt *controlador(typ_stt *state, int n);
+
 
 #endif

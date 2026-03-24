@@ -2,7 +2,7 @@
 #include "funcoes.h"
 
 
-typ_stt *executar_instrução(typ_stt *state, int n)
+typ_stt *controlador(typ_stt *state, int n)
 {
     enum tipo_i
     {

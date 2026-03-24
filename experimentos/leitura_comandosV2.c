@@ -22,7 +22,6 @@ typ_stt *decodificado_bit_bit(typ_stt *state)
         printf("erro ao abrir o arquivo memoria1.mem\n");
         return NULL;
     }
-
     state->registradores = (typ_reg *) malloc(255 * sizeof(typ_reg));
     state->instrucao_t = (typ_ins_t *) malloc(255 * sizeof(typ_ins_t));
     fseek(Mem_ins, 0, SEEK_SET);
