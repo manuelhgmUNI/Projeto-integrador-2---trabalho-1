@@ -40,7 +40,14 @@
 
     typedef struct str_regis
     {
-        /* registradores */
+        int8_t $r0;
+        int8_t $r1;
+        int8_t $r2;
+        int8_t $r3;
+        int8_t $r4;
+        int8_t $r5;
+        int8_t $r6;
+        int8_t $r7;
     }typ_reg;
 
     typedef struct state
