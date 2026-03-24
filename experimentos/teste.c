@@ -32,10 +32,10 @@ int main()
                     printf("ula: \n instrução:");
                     scanf("%i", &temp_ula);
                     limpa_buff();
-                    if (teste[temp_ula].instrucao_t.tipo != 3)
+                    if (teste->instrucao_t[temp_ula].tipo != 3)
                     {
-                        typ_ulaOp operacao = teste[temp_ula].instrucao_t.opcode;
-                        typ_ulaR resul = ula(teste[temp_ula].instrucao_t.rs, teste[temp_ula].instrucao_t.rt, operacao);
+                        typ_ulaOp operacao = teste->instrucao_t[temp_ula].opcode;
+                        typ_ulaR resul = ula(teste->instrucao_t[temp_ula].rs, teste->instrucao_t[temp_ula].rt, operacao);
                         printf("resultado: %i\nflag: %i\n", resul.resultado, resul.zero);
                     }
                     else

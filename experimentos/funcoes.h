@@ -14,7 +14,7 @@
     void limpa_buff();
 
     // ULA
-    ResultadoULA ula(int A, int B, ULAOp operacao);
+    typ_ulaR ula(int A, int B, typ_ulaOp operacao);
 
 
 #endif

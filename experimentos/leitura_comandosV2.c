@@ -23,25 +23,8 @@ typ_stt *decodificado_bit_bit(typ_stt *state)
         return NULL;
     }
 
-    /*
-    int linhas = 1;
-    do
-    {
-        char aventureiro = '\0', ultimo = '\0';
-        while ((aventureiro = fgetc(Mem_ins))!= EOF)
-        {
-            if (aventureiro == '\n')
-                linhas += 1;
-            }
-            if (aventureiro != EOF)
-            ultimo = aventureiro;
-            if(ultimo !=  '\n' && ultimo != '\0')
-            linhas += 1;
-        } while (0);
-    */
-
-
-    state = (typ_stt *) malloc(255 * sizeof(state));
+    state->registradores = (typ_reg *) malloc(255 * sizeof(typ_reg));
+    state->instrucao_t = (typ_ins_t *) malloc(255 * sizeof(typ_ins_t));
     fseek(Mem_ins, 0, SEEK_SET);
 
 
@@ -53,30 +36,30 @@ typ_stt *decodificado_bit_bit(typ_stt *state)
         if (fgets(buffer_linha, sizeof(buffer_linha), Mem_ins) == NULL) break;
 
         uint16_t inst_bin = (uint16_t) strtol(buffer_linha, NULL, 2);
-        state[i].instrucao_t.instrucao_bruta = inst_bin;
+        state->instrucao_t[i].instrucao_bruta = inst_bin;
 
 
-        state[i].instrucao_t.opcode = (inst_bin >> 12) & 0x0F;
-        state[i].instrucao_t.rs     = (inst_bin >> 9)  & 0x07;
-        state[i].instrucao_t.rt     = (inst_bin >> 6)  & 0x07;
-        state[i].instrucao_t.rd     = (inst_bin >> 3)  & 0x07;
-        state[i].instrucao_t.funct  =  inst_bin        & 0x07;
-        state[i].instrucao_t.addr   =  inst_bin        & 0x7F;
+        state->instrucao_t[i].opcode = (inst_bin >> 12) & 0x0F;
+        state->instrucao_t[i].rs     = (inst_bin >> 9)  & 0x07;
+        state->instrucao_t[i].rt     = (inst_bin >> 6)  & 0x07;
+        state->instrucao_t[i].rd     = (inst_bin >> 3)  & 0x07;
+        state->instrucao_t[i].funct  =  inst_bin        & 0x07;
+        state->instrucao_t[i].addr   =  inst_bin        & 0x7F;
 
 
 
-        if (state[i].instrucao_t.opcode == 0) {
-            state[i].instrucao_t.tipo = 1;
-        } else if (state[i].instrucao_t.opcode == 4 || state[i].instrucao_t.opcode == 8 || state[i].instrucao_t.opcode == 11 || state[i].instrucao_t.opcode == 15) {
-            state[i].instrucao_t.tipo = 2;
-        } else if (state[i].instrucao_t.opcode == 2) {
-            state[i].instrucao_t.tipo = 3;
+        if (state->instrucao_t[i].opcode == 0) {
+            state->instrucao_t[i].tipo = 1;
+        } else if (state->instrucao_t[i].opcode == 4 || state->instrucao_t[i].opcode == 8 || state->instrucao_t[i].opcode == 11 || state->instrucao_t[i].opcode == 15) {
+            state->instrucao_t[i].tipo = 2;
+        } else if (state->instrucao_t[i].opcode == 2) {
+            state->instrucao_t[i].tipo = 3;
         }
 
         printf("\n instrucao lida : %u / 0x%04X\n", inst_bin, inst_bin);
         printf("opcode: %i\nrs: %i | rt: %i | rd: %i\nfunct: %i | imediato: %i | addr: %i | tipo: %i\n",
-               state[i].instrucao_t.opcode, state[i].instrucao_t.rs, state[i].instrucao_t.rt, state[i].instrucao_t.rd,
-               state[i].instrucao_t.funct, state[i].instrucao_t.immediato, state[i].instrucao_t.addr, state[i].instrucao_t.tipo);
+               state->instrucao_t[i].opcode, state->instrucao_t[i].rs, state->instrucao_t[i].rt, state->instrucao_t[i].rd,
+               state->instrucao_t[i].funct, state->instrucao_t[i].immediato, state->instrucao_t[i].addr, state->instrucao_t[i].tipo);
     }
 
     fclose(Mem_ins);

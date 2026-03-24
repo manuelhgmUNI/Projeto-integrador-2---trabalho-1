@@ -45,9 +45,9 @@
 
     typedef struct state
     {
-        typ_ins_m instrucao_m;
-        typ_ins_t instrucao_t;
-        typ_reg registradores;
+        //typ_ins_m instrucao_m;
+        typ_ins_t *instrucao_t;
+        typ_reg *registradores;
         int pc;
 
     }typ_stt;
