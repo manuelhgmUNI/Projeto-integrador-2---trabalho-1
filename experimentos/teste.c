@@ -35,7 +35,7 @@ int main()
                     if (teste[temp_ula].instrucao_t.tipo != 3)
                     {
                         typ_ulaOp operacao = teste[temp_ula].instrucao_t.opcode;
-                        typ_Rula resul = ula(teste[temp_ula].instrucao_t.rs, teste[temp_ula].instrucao_t.rt, operacao);
+                        typ_ulaR resul = ula(teste[temp_ula].instrucao_t.rs, teste[temp_ula].instrucao_t.rt, operacao);
                         printf("resultado: %i\nflag: %i\n", resul.resultado, resul.zero);
                     }
                     else

@@ -3,8 +3,8 @@
 #include <string.h>
 #include "structs.h"
 
-ResultadoULA ula(int A, int B, ULAOp operacao) {
-    ResultadoULA res;
+typ_ulaR ula(int A, int B, typ_ulaOp operacao) {
+    typ_ulaR res;
 
     switch (operacao) {
         case ADD:

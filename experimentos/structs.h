@@ -40,14 +40,7 @@
 
     typedef struct str_regis
     {
-        int8_t $r0;
-        int8_t $r1;
-        int8_t $r2;
-        int8_t $r3;
-        int8_t $r4;
-        int8_t $r5;
-        int8_t $r6;
-        int8_t $r7;
+        int8_t $[8];
     }typ_reg;
 
     typedef struct state
@@ -72,7 +65,7 @@
     typedef struct {
         int resultado;  // Resultado da operação
         int zero;       // flag de 0 ou 1
-    }typ_Rula;
+    }typ_ulaR;
 
 
 #endif
