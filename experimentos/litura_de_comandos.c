@@ -1,31 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <stdint.h>
+#include "structs.h"
+#include "funcoes.h"
 
-
-int leitura_binario(char *bin, int inicio, int final, int sinal);
-
-
-int main()
+int decoder(typ_ins_m *instrução)
 {
-    enum tipos_de_instrução
-    {
-        r = 1,
-        i = 2,
-        j = 3,
-
-    };
-    struct str_instrucao
-    {
-        enum tipos_de_instrução tipo;
-        char total[17];
-        int opcode; // 0-3
-        int rs; // 4-6
-        int rt; // 7-9
-        int rd; // 10-12
-        int funct; // 13-15
-        int immediato; // 10-15
-        int addr; //endereço do jump
-    }*instrução;
                 /*
                 0000/000 => ADD => 0/0
                 0000/010 => SUB => 0/2
@@ -39,8 +19,8 @@ int main()
                 */
 
     FILE *Mem_ins = fopen("memoria1.mem", "r");
+    /*
     int linhas = 1;
-    
     do
     {
         char aventureiro = '\0', ultimo = '\0';
@@ -51,17 +31,18 @@ int main()
                 linhas += 1;
         }
         if (aventureiro != EOF)
-            ultimo = aventureiro;
+        ultimo = aventureiro;
         if(ultimo !=  '\n' && ultimo != '\0')
-            linhas += 1;
-
+        linhas += 1;
+        
     } while (0);
+    */
     
-    instrução = (struct str_instrucao *) malloc(linhas * sizeof(*instrução));
+    instrução = (struct str_instrucao *) malloc(255 * sizeof(*instrução));
 
     fseek(Mem_ins, 0, SEEK_SET);
 
-    for (int i = 0 ; i < linhas; i++)
+    for (int i = 0 ; i < 255; i++)
     {
         fgets(instrução[i].total, 17, Mem_ins);
         int c;
@@ -119,14 +100,7 @@ int leitura_binario(char *bin, int inicio, int final, int sinal)
                     resultado += (1 << j);
             resultado *= (-1);
         }
-        
-        /*
-        char *nbin = NULL;
-        nbin = malloc((tamanho+1)*sizeof(*nbin));
 
-        free(nbin);
-        nbin = NULL;
-        */
     }
     return resultado;
 }
