@@ -12,7 +12,7 @@ typ_stt *executar_instrução(typ_stt *state, int n)
         state[n].registradores.$[state[n].instrucao_t.rd] = saida_ula.resultado;
     break;
 
-    case 2:
+    case 2: // Tipo I
 
     break;
 
