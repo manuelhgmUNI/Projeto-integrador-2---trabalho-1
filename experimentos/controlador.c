@@ -4,23 +4,22 @@
 
 typ_stt *controlador(typ_stt *state, int n)
 {
-    enum tipo_i
-    {
-        addi = 3,
-        beq  = 8,
-        lw   = 11,
-        sw   = 15,
-    };
+
     
     switch (state->instrucao_t[n].tipo)
     {
-    case 1: // Tipo R 
-        typ_ulaOp ulaop = state->instrucao_t[n].funct;
-        typ_ulaR saida_ula = ula(state->registradores[n].$[state->instrucao_t[n].rs], state->registradores[n].$[state->instrucao_t[n].rt], ulaop);
-        state->registradores[n].$[state->instrucao_t[n].rd] = saida_ula.resultado;
+    case r: // Tipo R 
+    state->sinal[reg_des] = 1;
+    state->sinal[ula_fon] = 0;
+    typ_ulaOp ulaop = state->instrucao_t[n].funct;
+    state->sinal[mem_reg] = 1;
+    state->sinal[esc_reg] = 1;
+    state->sinal[jump]    = 0;
+    state->sinal[esc_mem] = 0;
+    state->sinal[inc_pc]  = 0;
     break;
 
-    case 2: // Tipo I
+    case i: // Tipo I
         if (state->instrucao_t[n].opcode != beq)
         {
             typ_ulaOp ulaop = ADD;
@@ -53,7 +52,7 @@ typ_stt *controlador(typ_stt *state, int n)
         }
     break;
 
-    case 3:
+    case j:
     
     default:
         break;

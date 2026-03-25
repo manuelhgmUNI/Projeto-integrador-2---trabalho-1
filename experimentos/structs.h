@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 #ifndef structs_H
 #define structs_H
 
@@ -49,9 +50,26 @@
         typ_ins_t *instrucao_t;
         typ_reg *registradores;
         int pc;
-
+        bool sinal[8];
     }typ_stt;
-    
+    enum
+    {
+        esc_mem = 0, // escrita na memoria
+        esc_reg = 1, // escrita no registrador
+        mem_reg = 2, // memoria para registrador
+        ula_fon = 3, // fonte da ula (registrador ou imediato)
+        reg_des = 4, // registrador de destino
+        inc_pc  = 5, // sinal de incremento do pc
+        jump    = 6, // sinal do jump
+
+    };
+    enum tipo_i
+    {
+        addi = 3,
+        beq  = 8,
+        lw   = 11,
+        sw   = 15,
+    };
 
     /* ================ ULA ================ */
     typedef enum {
