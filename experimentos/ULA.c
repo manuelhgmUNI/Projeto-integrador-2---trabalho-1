@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+<<<<<<< HEAD
 
 //removi main pra nao dar conflito, estava dando conflito na hora de compilar
 typedef enum {
@@ -55,10 +56,46 @@ ResultadoULA ula(signed char A, signed char B, ULAOp operacao) {
 
     res.resultado = (signed char)temp_res; 
     
+=======
+#include "structs.h"
+
+typ_ulaR ula(int A, int B, typ_ulaOp operacao) {
+    typ_ulaR res;
+
+    switch (operacao) {
+        case ADD:
+            res.resultado = A + B;
+            break;
+            
+        case SUB:
+            res.resultado = A - B;
+            break;
+
+        case AND:
+            res.resultado = A & B;
+            break;
+
+        case OR:
+            res.resultado = A | B;
+            break;
+
+
+        case SLT:
+            if (A < B)
+                res.resultado = 1;
+            else
+                res.resultado = 0;
+            break;
+    }
+>>>>>>> manuel
     if (res.resultado == 0)
         res.zero = 1;
     else
         res.zero = 0;
 
     return res;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> manuel
