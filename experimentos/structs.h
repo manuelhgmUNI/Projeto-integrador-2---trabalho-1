@@ -51,6 +51,7 @@
         typ_reg *registradores;
         int pc;
         bool sinal[8];
+        typ_ulaOp ulaop;
     }typ_stt;
     enum
     {
@@ -61,11 +62,12 @@
         reg_des = 4, // registrador de destino
         inc_pc  = 5, // sinal de incremento do pc
         jump    = 6, // sinal do jump
+        branch  = 7, // sinal de indentificação de beq AVISO: ele se junta ao zero uma com um and
 
     };
     enum tipo_i
     {
-        addi = 3,
+        addi = 4,
         beq  = 8,
         lw   = 11,
         sw   = 15,
@@ -77,7 +79,7 @@
         SUB = 2,    // 2
         AND = 4,    // 4
         OR  = 5,    // 5
-        SLT     // 4
+        SLT
     }typ_ulaOp;
 
     typedef struct {
