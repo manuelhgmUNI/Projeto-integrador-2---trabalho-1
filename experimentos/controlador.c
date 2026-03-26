@@ -33,6 +33,7 @@ typ_stt *controlador(typ_stt *state, int n)
             state->sinal[inc_pc]  = 1;
             state->sinal[jump]    = 0;
             state->sinal[branch]  = 1;
+            // AVISO: antes de substituir o pc tem que somar o pc+1 com o imediato
         break;
             
 

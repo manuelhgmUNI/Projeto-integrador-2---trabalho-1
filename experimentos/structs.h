@@ -36,6 +36,7 @@
         uint16_t rd;        // 5-3 (3 bits)
         uint16_t funct;     // 2-0 (3 bits)
         int16_t  immediato; // 5-0 (6 bits) - int com sinal p aceita negativos
+        uint16_t uimmediato;// 5-0 (9 bits) - mesma coisa q o de cima só q sem sinal
         uint16_t addr;      // 6-0 (7 bits)
     }typ_ins_t;
 
@@ -52,6 +53,7 @@
         int pc;
         bool sinal[8];
         typ_ulaOp ulaop;
+        typ_ulaR ular;
     }typ_stt;
     enum
     {
@@ -84,7 +86,8 @@
 
     typedef struct {
         int resultado;  // Resultado da operação
-        int zero;       // flag de 0 ou 1
+        bool zero;       // flag de 0 ou 1
+        bool overflow;
     }typ_ulaR;
 
 
