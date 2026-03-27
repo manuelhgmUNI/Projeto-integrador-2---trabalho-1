@@ -11,19 +11,6 @@
 
     };
 
-    typedef struct str_instrucao
-    {
-        enum tipos_de_instrucao tipo;
-        char total[17];
-        int opcode; // 0-3
-        int rs; // 4-6
-        int rt; // 7-9
-        int rd; // 10-12
-        int funct; // 13-15
-        int immediato; // 10-15
-        int addr; //endereço do jump
-    }typ_ins_m;
-
     typedef struct str_instrucaoV2
     {
         enum tipos_de_instrucao tipo;

@@ -5,7 +5,6 @@
 
     // leitura de comandos v1 string
     int leitura_binario(char *bin, int inicio, int final, int sinal);
-    int decoder(typ_ins_m *instrução);
 
     // leitura de comandos v2 bit a bit
     typ_stt *decodificado_bit_bit(typ_stt *state);
