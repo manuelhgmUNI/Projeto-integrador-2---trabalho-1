@@ -6,7 +6,6 @@
 int main()
 {
     typ_stt *teste = NULL;
-    typ_ins_m *insteste = NULL;
     teste = (typ_stt *) malloc(sizeof(typ_stt));
 
 
@@ -20,7 +19,7 @@ int main()
         switch (menu)
         {
             case 1:
-                decoder(insteste); // veio
+
             break;
             case 2:
                 teste = decodificado_bit_bit(teste);
@@ -57,7 +56,6 @@ int main()
     } while(menu != 0);
 
     free(teste);
-    free(insteste);
     return 0;
     
 }
