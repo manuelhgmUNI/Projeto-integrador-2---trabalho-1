@@ -3,9 +3,6 @@
 #ifndef funcoes_H
 #define funcoes_H  
 
-    // leitura de comandos v1 string
-    int leitura_binario(char *bin, int inicio, int final, int sinal);
-
     // leitura de comandos v2 bit a bit
     typ_stt *decodificado_bit_bit(typ_stt *state);
 

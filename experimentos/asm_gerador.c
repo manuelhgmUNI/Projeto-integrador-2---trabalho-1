@@ -33,7 +33,7 @@ void asm_gerador(typ_ins_t *ins, int n)
                         fprintf(arquivo, "or ");
                     break;
                 }
-                fprintf(arquivo, "$r%i, $r%i, $r%i", ins[k].rd, ins[k].rs, ins[k].rt);
+                fprintf(arquivo, "$r%i, $r%i, $r%i\n", ins[k].rd, ins[k].rs, ins[k].rt);
 
 
             break;
@@ -63,11 +63,11 @@ void asm_gerador(typ_ins_t *ins, int n)
                 default:
                     break;
                 }
-                fprintf(arquivo, "$r%i, $r%i, %i", ins[k].rs, ins[k].rt, ins[k].immediato);
+                fprintf(arquivo, "$r%i, $r%i, %i\n", ins[k].rs, ins[k].rt, ins[k].immediato);
             break;
 
             case j:
-
+                fprintf(arquivo, "jump %i\n",ins[k].addr);
             break;
             default:
             break;

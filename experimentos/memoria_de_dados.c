@@ -17,7 +17,7 @@ int8_t mem_data(unsigned int endereco, int8_t D, bool str, bool ld, bool clear)
 
     if (existia == 0 || clear == 1) // zera
     {
-        fwrite(0, sizeof(int8_t), 512, data);
+        fwrite(0, sizeof(int8_t), 256, data);
         fseek(data, 0, SEEK_SET);
     }
 
