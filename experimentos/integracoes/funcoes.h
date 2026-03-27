@@ -10,4 +10,6 @@
     // Controlador 
     void controlador(typ_stt *state, int n);
 
+    void executarCiclo(typ_stt *state, int n);
+
 #endif

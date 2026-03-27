@@ -24,13 +24,14 @@ int main()
 
    //zerar
     typ_mem_dados mem_dados;
-    memset(mem_dados.dados, 0, sizeof(mem_dados.dados));
+    memset(mem_dados.dados, 0, sizeof(mem_dados.dados));//zerar
     estado.mem_dados = &mem_dados;
 
     instrucaoSep *memoria_instrucoes = NULL;
 
     do
     {
+        //5,6,7 imprimir simulador, .asm, .dat
         printf("\n   -=|| MIPS UNIPAMPA ||=-   \n");
         printf(" PC: %d | Instrucoes Carregadas: %d\n", estado.pc, num_instrucoes);
         printf("+------+----------------------------------------------------+\n");
@@ -38,9 +39,9 @@ int main()
         printf("| [2]  | Carregar memoria de dados (.dat)                   |\n"); 
         printf("| [3]  | Imprimir memorias (instrucoes e dados)             |\n");
         printf("| [4]  | Imprimir banco de registradores                    |\n");
-        printf("| [8]  | Executar Programa (Run)                            |\n");
-        printf("| [9]  | Executar uma instrucao (Step)                      |\n");
-        printf("| [10] | Voltar uma instrucao (Back)                        |\n"); 
+        printf("| [8]  | Executar Programa (Run)                            |\n"); // executa tudo em loop
+        printf("| [9]  | Executar uma instrucao (Step)                      |\n"); //no step ele avança um pc por vez e ja preenche o pc_hist
+        printf("| [10] | Voltar uma instrucao (Back)                        |\n"); //precisa refatorar, ela resgata somente o pc, mas n resgata os dados da mem e dos registradores (!!!!!)
         printf("| [0]  | Resetar PC e Registradores                         |\n");
         printf("| [123]| Sair                                               |\n");
         printf("+------+----------------------------------------------------+\n");
@@ -63,9 +64,9 @@ int main()
             break;
 
         case 2: {
-            char nome_dat[64];
+            char nome_dat[25];
             printf("Nome do arquivo .dat: ");
-            if (scanf("%63s", nome_dat) != 1) { limpa_buff(); break; }
+            if (scanf("%24s", nome_dat) != 1) { limpa_buff(); break; }
             limpa_buff();
 
             FILE *f = fopen(nome_dat, "r");
@@ -112,13 +113,13 @@ int main()
 
         case 8: //run
             if (memoria_instrucoes == NULL) {
-                printf("Erro\n");
+                printf("erro\n");
                 break;
             }
             printf("executando\n");
             estado.hist_topo = 0; //clear antes do run
             while (estado.pc < num_instrucoes) {
-                controlador(&estado, estado.pc);
+               executarCiclo(&estado, estado.pc);
                 estado.pc++;
             }
             printf("finalizado PC: %d\n", estado.pc);
@@ -126,17 +127,18 @@ int main()
 
         case 9: //step
             if (memoria_instrucoes == NULL) {
-                printf("Erro: Carregue as instrucoes primeiro.\n");
+                printf("erro \n");
             } else if (estado.pc >= num_instrucoes) {
-                printf("Fim do programa atingido. Resete o PC (Opcao 0).\n");
+                printf("fim do programa .\n");
             } else {
                //historico pc
                 if (estado.hist_topo < 256)
                     estado.pc_hist[estado.hist_topo++] = estado.pc;
 
-                printf("Executando PC[%d]: %s\n", estado.pc,
-                       memoria_instrucoes[estado.pc].total);
-                controlador(&estado, estado.pc);
+                printf("eexecutando pc[%d]: %s\n", estado.pc,
+                memoria_instrucoes[estado.pc].total);
+
+                executarCiclo(&estado, estado.pc);
                 estado.pc++;
                 imprime_registradores(&banco);
             }

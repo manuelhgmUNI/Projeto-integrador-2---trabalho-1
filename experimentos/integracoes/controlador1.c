@@ -13,6 +13,9 @@ void controlador(typ_stt *state, int n)
     switch (ins->tipo)
     {
     case r: //Tipo R 
+        /* le o rs e o rt, passa p ula, utiliza o funct armazenado em ulaop 
+        p decidir qual operacao fazer e salva o valor resultante em rd
+        */
         ulaop     = (typ_ulaOp)ins->funct;
         saida_ula = ula(le_registrador(state->registradores, ins->rs),
                         le_registrador(state->registradores, ins->rt),
@@ -26,7 +29,13 @@ void controlador(typ_stt *state, int n)
 
     case i: // Tipo I 
         if (ins->opcode == beq) {
-            //beq: subtrai rs - rt  se zero desvia.
+            /*beq: subtrai rs - rt  se flag zero retorna vdd,
+             pc é somado fazendo o jump incondicional
+             addi: ula soma o rs com o imm e armazena no rt
+             lw/sw: controlador1.c usa o result da ula como indice p endereco da memoria
+             no lw busca o dado/valor no endereco e escreve no rt
+             no sw pega o valor e escreve na mem dados . (ele verifica o limite que tinha sido usado no define)
+            */
             ulaop     = SUB;
             saida_ula = ula(le_registrador(state->registradores, ins->rs),
                             le_registrador(state->registradores, ins->rt),
@@ -41,7 +50,7 @@ void controlador(typ_stt *state, int n)
             saida_ula  = ula(val_rs, ins->immediato, ulaop);
 
             if (saida_ula.overflow)
-                printf("[AVISO] Overflow na instrucao I (PC=%d)\n", n);
+                printf("overflow I (PC=%d)\n", n);
 
             if (ins->opcode == addi) {
                 escreve_registrador(state->registradores, ins->rt, saida_ula.resultado);
@@ -54,7 +63,7 @@ void controlador(typ_stt *state, int n)
                     escreve_registrador(state->registradores, ins->rt,
                                         state->mem_dados->dados[endereco]);
                 } else {
-                    printf("[ERRO] LW: endereco %d invalido\n", endereco);
+                    printf("erro LW endereco invalido\n");
                 }
 
             } else if (ins->opcode == sw) {
@@ -65,13 +74,14 @@ void controlador(typ_stt *state, int n)
                     state->mem_dados->dados[endereco] =
                         (int8_t)le_registrador(state->registradores, ins->rt);
                 } else {
-                    printf("[ERRO] SW: endereco %d invalido\n", endereco);
+                    printf("erro SW endereco invalido\n");
                 }
             }
         }
         break;
 
     case j: 
+    // altera pc p endereco fazendo um jump incondicional
         state->pc = (int)(ins->instrucao_bruta & 0xFF) - 1;
         break;
 
