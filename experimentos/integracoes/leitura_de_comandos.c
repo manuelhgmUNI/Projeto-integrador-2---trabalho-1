@@ -6,7 +6,7 @@
 #include "leitura_de_comandos.h"
 
 
-int carregar_memoria_instrucoes(instrucaoSep **mem_out)
+int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out)
 {
     char nome_arquivo[25];
     printf("Nome do arquivo .mem: ");
@@ -19,7 +19,7 @@ int carregar_memoria_instrucoes(instrucaoSep **mem_out)
     }
 
     //malloc ate 255
-    instrucaoSep *mem = (instrucaoSep *) malloc(255 * sizeof(instrucaoSep));
+    typ_instrucaoSep *mem = (typ_instrucaoSep *) malloc(256 * sizeof(typ_instrucaoSep));
     if (mem == NULL) {
         fclose(Mem_ins);
         return 0;
@@ -28,7 +28,7 @@ int carregar_memoria_instrucoes(instrucaoSep **mem_out)
     char buffer_linha[20]; 
     int count = 0; //contador qnts inst foram lidas
 
-    for (int i = 0; i < 255; i++) {
+    for (int i = 0; i < 256; i++) {
         if (fgets(buffer_linha, sizeof(buffer_linha), Mem_ins) == NULL) break;
 
         buffer_linha[strcspn(buffer_linha, "\n")] = '\0';
@@ -46,7 +46,7 @@ int carregar_memoria_instrucoes(instrucaoSep **mem_out)
         mem[i].rt     = (inst_bin >> 6)  & 0x07; // 00000 111/ 7
         mem[i].rd     = (inst_bin >> 3)  & 0x07;
         mem[i].funct  =  inst_bin        & 0x07;
-        mem[i].addr   =  inst_bin        & 0xFF; //tava pegando so 7 ao inves de 8bits : 11111111/255
+        mem[i].addr   =  inst_bin        & 0x7F; 
 
     
         int16_t imm6 = (int16_t)(inst_bin & 0x3F);//111111 6 bits

@@ -27,7 +27,7 @@ int main()
     memset(mem_dados.dados, 0, sizeof(mem_dados.dados));//zerar
     estado.mem_dados = &mem_dados;
 
-    instrucaoSep *memoria_instrucoes = NULL;
+    typ_instrucaoSep *memoria_instrucoes = NULL;
 
     do
     {
@@ -58,7 +58,7 @@ int main()
         case 1:
             if (memoria_instrucoes != NULL) free(memoria_instrucoes);
             num_instrucoes = carregar_memoria_instrucoes(&memoria_instrucoes);
-            estado.instrucao_t = (typ_ins_t*)memoria_instrucoes;
+            estado.instrucao_t = (typ_ins*)memoria_instrucoes;
             estado.pc          = 0;
             estado.hist_topo   = 0; 
             break;

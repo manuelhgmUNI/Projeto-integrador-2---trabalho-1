@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-int carregar_memoria_instrucoes(instrucaoSep **mem_out);
+int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out);
 
 #endif

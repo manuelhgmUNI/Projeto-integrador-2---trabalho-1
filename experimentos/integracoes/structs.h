@@ -1,6 +1,5 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
-
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -24,10 +23,10 @@ typedef struct str_instrucaoV2 {
     uint16_t funct;     // 2-0
     int16_t  immediato; // 5-0
     uint16_t addr;      // 6-0
-} typ_ins_t;
+} typ_ins;
 
 //typedef p ser compativel com o nosso main
-typedef typ_ins_t instrucaoSep;
+typedef typ_ins typ_instrucaoSep;
 
 //registrador agora com int8_t e alterei para $ tbm
 typedef struct str_regis {
@@ -57,7 +56,7 @@ typedef struct {
 
 // estado
 typedef struct str_state {
-    typ_ins_t     *instrucao_t;
+    typ_ins     *instrucao_t;
     typ_reg       *registradores;
     typ_mem_dados *mem_dados;   //ponteiro mem dados
     int pc;

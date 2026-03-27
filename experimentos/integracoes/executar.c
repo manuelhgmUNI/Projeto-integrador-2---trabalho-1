@@ -6,7 +6,7 @@
 
 void executarCiclo(typ_stt *state, int n)
 {
-    typ_ins_t *ins = &state->instrucao_t[n];
+    typ_ins *ins = &state->instrucao_t[n];
 
     
     controlador(state, n);
