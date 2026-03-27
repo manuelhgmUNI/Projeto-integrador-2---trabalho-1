@@ -3,7 +3,7 @@
 #include "funcoes.h"
 
 
-void asm_gerador(typ_ins_t *ins, int n)
+void asm_gerador(typ_ins *ins, int n)
 {
 
     FILE *arquivo;
