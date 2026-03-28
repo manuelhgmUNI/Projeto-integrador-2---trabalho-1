@@ -18,4 +18,6 @@
     int le_registrador(BancoRegistradores *banco, int indice);
     void imprime_registradores(BancoRegistradores *banco);
 
+    // memoria de dados
+    int8_t mem_data(unsigned int endereco, int8_t D, bool str, bool ld, bool clear);
 #endif

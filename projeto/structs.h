@@ -48,6 +48,7 @@
         typ_mdd *mem_dados;
         int pc;
         int *pc_hist; // ponteiro para historico de instrução, sera usado realoc a cara step
+        int hist_topo;
         bool sinal[8];
         typ_ulaOp ulaop;
         typ_ulaR ular;
