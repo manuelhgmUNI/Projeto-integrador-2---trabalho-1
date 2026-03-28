@@ -46,6 +46,7 @@
         typ_ins *instrucao_t;
         typ_reg *registradores;
         typ_mdd *mem_dados;
+        int cont_inst;
         int pc;
         int *pc_hist; // ponteiro para historico de instrução, sera usado realoc a cara step
         int hist_topo;
