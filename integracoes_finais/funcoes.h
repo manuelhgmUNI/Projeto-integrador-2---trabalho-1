@@ -19,7 +19,7 @@
     void imprime_registradores(BancoRegistradores *banco);
 
     // memoria de dados
-    int8_t mem_data(unsigned int endereco, int8_t D, bool str, bool ld, bool clear);
+    int8_t mem_data(typ_mdd *mem, unsigned int endereco, int8_t D, bool str, bool ld, bool clear);//passando o ponteiro p mem dataz
     int executar(typ_stt *status, typ_reg reg, bool clear_data);
 
 #endif

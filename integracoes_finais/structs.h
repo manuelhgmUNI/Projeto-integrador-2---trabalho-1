@@ -40,6 +40,7 @@
     } typ_mem_dados;
     typedef typ_mem_dados typ_mdd;
 
+    //movi a ula p cima, para a typ_stt poder usar o typ_ulaR e typ_ulaOp
      /* ================ ULA ================ */
     typedef enum {
         ADD = 0,    // 0
@@ -55,16 +56,32 @@
         bool overflow;
     }typ_ulaR;
 
+        typedef struct 
+    {
+        int pc;
+        typ_reg banco_reg;
+        typ_mdd mem_dados;
+    }print; //print do estado p poder fazer backstep
+    
+
     typedef struct str_state
     {
-        //typ_ins_m instrucao_m;
         typ_ins *instrucao_t;
         typ_reg *registradores;
         typ_mdd *mem_dados;
         int cont_inst;
         int pc;
-        int *pc_hist; // ponteiro para historico de instrução, sera usado realoc a cara step
+        int pc_hist[256]; // historico de instrução
         int hist_topo;
+
+        print pilha_back[2000]; //backup 
+        int topo_pilha;
+        // estatísticas de execução
+        int total_instrucoes;
+        int r_instrucoes;
+        int i_instrucoes;
+        int j_instrucoes;
+
         bool sinal[8];
         typ_ulaOp ulaop;
         typ_ulaR ular;
@@ -89,6 +106,6 @@
         sw   = 15,
     };
 
-    
+
 
 #endif

@@ -23,8 +23,15 @@ int main()
 
    //zerar
     typ_mem_dados mem_dados;
-    memset(mem_dados.dados, 0, sizeof(mem_dados.dados));//zerar
+    memset(mem_dados.dados, 0, sizeof(mem_dados.dados)); // zerar
     estado.mem_dados = &mem_dados;
+
+    // inicializar backup do backstep
+    estado.topo_pilha=0;
+    estado.total_instrucoes = 0;
+    estado.r_instrucoes = 0;
+    estado.i_instrucoes = 0;
+    estado.j_instrucoes = 0;
 
     typ_instrucaoSep *memoria_instrucoes = NULL;
 
@@ -35,9 +42,12 @@ int main()
         printf(" PC: %d | Instrucoes Carregadas: %d\n", estado.pc, num_instrucoes);
         printf("+------+----------------------------------------------------+\n");
         printf("| [1]  | Carregar memoria de instrucoes (.mem)              |\n");
-        printf("| [2]  | Carregar memoria de dados (.dat)                   |\n"); 
+        printf("| [2]  | Carregar memoria de dados (.dat)                   |\n"); //implementado
         printf("| [3]  | Imprimir memorias (instrucoes e dados)             |\n");
         printf("| [4]  | Imprimir banco de registradores                    |\n");
+        printf("| [5]  | Imprimir estado completo (memoria + registradores) |\n");
+        printf("| [6]  | Salvar .asm                                        |\n"); //asm
+        printf("| [7]  | Salvar .dat                                        |\n"); //salvando o .dat
         printf("| [8]  | Executar Programa (Run)                            |\n"); // executa tudo em loop
         printf("| [9]  | Executar uma instrucao (Step)                      |\n"); //no step ele avança um pc por vez e ja preenche o pc_hist
         printf("| [10] | Voltar uma instrucao (Back)                        |\n"); //precisa refatorar, ela resgata somente o pc, mas n resgata os dados da mem e dos registradores (!!!!!)
@@ -94,7 +104,7 @@ int main()
                            memoria_instrucoes[i].opcode,
                            memoria_instrucoes[i].funct);
                 }
-               
+
                 printf("\nmem de dados \n");
                 int tem = 0;
                 for (int i = 0; i < 256; i++) {
@@ -111,51 +121,113 @@ int main()
             imprime_registradores(&banco);
             break;
 
+        case 5:
+            printf("\n  ESTADO COMPLETO \n");
+            imprime_registradores(&banco);
+            printf("\nmem de dados:\n");
+            for (int i = 0; i < 256; i++) {
+                if (mem_dados.dados[i] != 0) {
+                    printf("[%03d]=%d ", i, mem_dados.dados[i]);
+                }
+            }
+            printf("\n");
+            break;
+
+        case 6: {
+            char nome_asm[25];
+            printf("Nome do arquivo de saida .asm: ");
+            if (scanf("%24s", nome_asm) == 1) {
+                FILE *f = fopen(nome_asm, "w");
+                if (f) {
+                    for (int i = 0; i < num_instrucoes; i++) {
+                        fprintf(f, "%s\n", memoria_instrucoes[i].total);
+                    }
+                    fclose(f);
+                    printf("Arquivo .asm salvo: %s\n", nome_asm);
+                } else printf("Erro ao criar %s\n", nome_asm);
+            }
+            limpa_buff();
+            break;
+        }
+
+        case 7: {
+            char nome_dat[25];
+            printf("Nome do arquivo de saida .dat: ");
+            if (scanf("%24s", nome_dat) == 1) {
+                FILE *f = fopen(nome_dat, "w");
+                if (f) {
+                    for (int i = 0; i < 256; i++) {
+                        fprintf(f, "%d\n", mem_dados.dados[i]);
+                    }
+                    fclose(f);
+                    printf("Arquivo .dat salvo: %s\n", nome_dat);
+                } else printf("Erro ao criar %s\n", nome_dat);
+            }
+            limpa_buff();
+            break;
+        }
+
         case 8: //run
             if (memoria_instrucoes == NULL) {
                 printf("erro\n");
                 break;
             }
             printf("executando\n");
-            estado.hist_topo = 0; //clear antes do run
+            estado.hist_topo = 0; // clear antes do run
             while (estado.pc < num_instrucoes) {
-               executar(&estado, banco, false);
+                executar(&estado, banco, false);
             }
             printf("finalizado PC: %d\n", estado.pc);
             break;
 
         case 9: //step
-            if (memoria_instrucoes == NULL) {
-                printf("erro \n");
-            } else if (estado.pc >= num_instrucoes) {
+    
+            if (estado.pc >= num_instrucoes) {
                 printf("fim do programa .\n");
             } else {
-               //historico pc
+                // backup do proximo estado para Back
+               if (estado.topo_pilha < 2000)
+               {
+                    estado.pilha_back[estado.topo_pilha].pc = estado.pc;
+                    estado.pilha_back[estado.topo_pilha].banco_reg = banco;
+                    estado.pilha_back[estado.topo_pilha].mem_dados = mem_dados;
+                    estado.topo_pilha++; // sobe o topo da pilha       
+               }else printf("limite atingido\n");
+               
+
                 if (estado.hist_topo < 256)
                     estado.pc_hist[estado.hist_topo++] = estado.pc;
 
                 printf("eexecutando pc[%d]: %s\n", estado.pc,
-                memoria_instrucoes[estado.pc].total);
+                       memoria_instrucoes[estado.pc].total);
 
                 executar(&estado, banco, false);
                 imprime_registradores(&banco);
             }
             break;
 
-            //volta um passo mas pega so o pc, teriamos que ver uma forme de armazenar o restante
         case 10:
-            if (estado.hist_topo == 0) {
-                printf("nao tem instrucao anterior para voltar\n");
+            
+            if (estado.topo_pilha > 0) {
+                //decrementa
+                estado.topo_pilha--; 
+
+                //restauracao
+                estado.pc = estado.pilha_back[estado.topo_pilha].pc;
+                banco = estado.pilha_back[estado.topo_pilha].banco_reg;
+                mem_dados = estado.pilha_back[estado.topo_pilha].mem_dados;
+                
+                if (estado.hist_topo > 0) estado.hist_topo--; 
+                
+                printf("back: restaurado para PC=%d\\n", estado.pc);
+                imprime_registradores(&banco);
             } else {
-                estado.pc = estado.pc_hist[--estado.hist_topo];
-                printf("back:  restaurado para %d.\n", estado.pc);
-                imprime_registradores(&banco);//reg  e mem dados nao sao desfeitos :/
-            }
+                printf("nao tem instrucao anterior para voltar\\n");
+            }           
             break;
 
         case 0:
-            estado.pc        = 0;
-            estado.hist_topo = 0;
+            estado.topo_pilha = 0;
             inicia_registradores(&banco);
             memset(mem_dados.dados, 0, sizeof(mem_dados.dados));
             printf("foi resetado :) .\n");

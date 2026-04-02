@@ -12,7 +12,7 @@ typ_stt *controlador(typ_stt *state, int n)
     state->sinal[reg_des] = 1;
     state->sinal[ula_fon] = 0;
     state->ulaop = state->instrucao_t[n].funct;
-    state->sinal[mem_reg] = 1;
+    state->sinal[mem_reg] = 0;
     state->sinal[esc_reg] = 1;
     state->sinal[jump]    = 0;
     state->sinal[esc_mem] = 0;
@@ -24,7 +24,7 @@ typ_stt *controlador(typ_stt *state, int n)
         switch (state->instrucao_t[n].opcode)
         {
         case beq:
-            state->ulaop = AND;
+            state->ulaop = SUB; //no beq é sub e nao and
             state->sinal[esc_mem] = 0;
             state->sinal[esc_reg] = 0;
             state->sinal[mem_reg] = 0;
@@ -41,7 +41,7 @@ typ_stt *controlador(typ_stt *state, int n)
             state->ulaop = ADD;
             state->sinal[esc_mem] = 0;
             state->sinal[esc_reg] = 1;
-            state->sinal[mem_reg] = 1;
+            state->sinal[mem_reg] = 0;
             state->sinal[ula_fon] = 1;
             state->sinal[reg_des] = 0;
             state->sinal[inc_pc]  = 1;
@@ -55,7 +55,7 @@ typ_stt *controlador(typ_stt *state, int n)
             state->ulaop = ADD;
             state->sinal[esc_mem] = 0;
             state->sinal[esc_reg] = 1;
-            state->sinal[mem_reg] = 0;
+            state->sinal[mem_reg] = 1;
             state->sinal[ula_fon] = 1;
             state->sinal[reg_des] = 0;
             state->sinal[inc_pc]  = 1;
@@ -96,4 +96,5 @@ typ_stt *controlador(typ_stt *state, int n)
         break;
     }
 
+    return state;
 }
