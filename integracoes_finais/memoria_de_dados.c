@@ -7,7 +7,7 @@
 int8_t mem_data(typ_mdd *mem, unsigned int endereco, int8_t D, bool str, bool ld, bool clear)
 {
     if (mem == NULL) {
-        fprintf(stderr, "ERROR: mem_data com ponteiro NULL\n");
+        fprintf(stderr, "mem_data com ponteiro NULL\n");
         return 0;
     }
 
