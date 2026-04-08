@@ -3,14 +3,12 @@
 #include <string.h>
 #include "structs.h"
 #include "funcoes.h"
-#include "registradores.h"
-#include "leitura_de_comandos.h"
 
 void limpa_buff();
 
 int main()
 {
-    int menu          = 0;
+    int menu           = 0;
     int num_instrucoes = 0;
 
    //incializar
@@ -39,6 +37,9 @@ int main()
         printf("| [2]  | Carregar memoria de dados (.dat)                   |\n"); 
         printf("| [3]  | Imprimir memorias (instrucoes e dados)             |\n");
         printf("| [4]  | Imprimir banco de registradores                    |\n");
+        printf("| [5]  | ???                                                |\n");
+        printf("| [6]  | Gerar .asm                                         |\n");
+        printf("| [7]  | Gerar .dat                                         |\n");
         printf("| [8]  | Executar Programa (Run)                            |\n"); // executa tudo em loop
         printf("| [9]  | Executar uma instrucao (Step)                      |\n"); //no step ele avança um pc por vez e ja preenche o pc_hist
         printf("| [10] | Voltar uma instrucao (Back)                        |\n"); //precisa refatorar, ela resgata somente o pc, mas n resgata os dados da mem e dos registradores (!!!!!)
@@ -47,7 +48,8 @@ int main()
         printf("+------+----------------------------------------------------+\n");
         printf("Entrada: ");
 
-        if (scanf("%i", &menu) != 1) {
+        if (scanf("%i", &menu) != 1) 
+        {
             limpa_buff();
             continue;
         }
@@ -55,17 +57,19 @@ int main()
 
         switch (menu)
         {
-        case 1: // carregar memora de instruçoes
+        case 1:
             if (memoria_instrucoes != NULL) free(memoria_instrucoes);
+
             num_instrucoes = carregar_memoria_instrucoes(&memoria_instrucoes);
             estado.instrucao_t = (typ_ins*)memoria_instrucoes;
             estado.pc          = 0;
             estado.hist_topo   = 0; 
             break;
 
-        case 2: 
+        case 2:
             char nome_dat[25];
             printf("Nome do arquivo .dat: ");
+
             if (scanf("%24s", nome_dat) != 1) 
             { 
                 limpa_buff(); 
@@ -101,9 +105,9 @@ int main()
                 for (int i = 0; i < num_instrucoes; i++) 
                 {
                     printf("[%03d] %s | Op: %d | Funct: %d\n", i,
-                            memoria_instrucoes[i].total,
-                            memoria_instrucoes[i].opcode,
-                            memoria_instrucoes[i].funct);
+                           memoria_instrucoes[i].total,
+                           memoria_instrucoes[i].opcode,
+                           memoria_instrucoes[i].funct);
                 }
                
                 printf("\nmem de dados \n");
@@ -149,7 +153,7 @@ int main()
                 if (estado.pc >= num_instrucoes) 
                 {
                     printf("fim do programa .\n");
-                } 
+                }
                 else 
                 {
                     //historico pc

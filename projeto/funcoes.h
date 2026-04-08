@@ -20,4 +20,7 @@
 
     // memoria de dados
     int8_t mem_data(unsigned int endereco, int8_t D, bool str, bool ld, bool clear);
+
+    // gerador asm
+    int asm_gerador(typ_ins *instrucao, int n);
 #endif

@@ -28,10 +28,3 @@ void imprime_registradores(BancoRegistradores *banco) {
         printf("$%d: %4d\n", i, banco->$[i]);
     }
 }
-
-typ_sreg Banco_de_registradores(uint8_t rs, uint8_t rt, uint8_t rd, bool esc_reg, typ_reg *banco)
-{
-    typ_sreg saida;
-    saida.s1 = (*banco).$[rs];
-    saida.s2 = (*banco).$[rt];
-}

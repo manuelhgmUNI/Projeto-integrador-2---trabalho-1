@@ -34,6 +34,11 @@
     }typ_reg;
 
     typedef typ_reg BancoRegistradores;
+    typedef struct str_saida_reg
+    {
+        int8_t s1;
+        int8_t s2;
+    }typ_sreg;
 
     typedef struct {
     int8_t dados[256];
@@ -53,6 +58,7 @@
         bool sinal[8];
         typ_ulaOp ulaop;
         typ_ulaR ular;
+        typ_sreg sbreg;
     }typ_stt;
     enum
     {
