@@ -51,8 +51,8 @@
     }typ_ulaOp;
 
     typedef struct {
-        int resultado;  // Resultado da operação
-        bool zero;       // flag de 0 ou 1
+        int resultado;  // resultado
+        bool zero;       // flag de 0 ou 1 beq 
         bool overflow;
     }typ_ulaR;
 
@@ -76,7 +76,7 @@
 
         print pilha_back[2000]; //backup 
         int topo_pilha;
-        // estatísticas de execução
+        // stats instrucao mas ainda nao testei
         int total_instrucoes;
         int r_instrucoes;
         int i_instrucoes;
@@ -88,14 +88,14 @@
     }typ_stt;
     enum
     {
-        esc_mem = 0, // escrita na memoria
-        esc_reg = 1, // escrita no registrador
-        mem_reg = 2, // memoria para registrador
-        ula_fon = 3, // fonte da ula (registrador ou imediato)
-        reg_des = 4, // registrador de destino
-        inc_pc  = 5, // sinal de incremento do pc
-        jump    = 6, // sinal do jump
-        branch  = 7, // sinal de indentificação de beq AVISO: ele se junta ao zero uma com um and
+        esc_mem = 0, 
+        esc_reg = 1, 
+        mem_reg = 2, 
+        ula_fon = 3, //(registrador ou imediato)
+        reg_des = 4, 
+        inc_pc  = 5, 
+        jump    = 6, 
+        branch  = 7, 
 
     };
     enum tipo_i

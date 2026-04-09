@@ -8,16 +8,16 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
     int val_write;
 
     if (status == NULL || status->instrucao_t == NULL || status->registradores == NULL || status->mem_dados == NULL) {
-        fprintf(stderr, "ERROR: estado inválido em executar()\n");
+        fprintf(stderr, "errro\n");
         return -1;
-    }
+    }//tratamento de erro  pq tava dando segmentation fault
 
     if (status->pc < 0 || status->pc >= 256) {
-        fprintf(stderr, "ERROR: PC fora do range: %d\n", status->pc);
+        fprintf(stderr, "erro!\n");
         return -1;
-    }
+    }//ver se o pc tem um valor valido
 
-    // Estatísticas de execução
+    //stats mas n testei ainda, pra deixar mais didatico como o julio pediu
     status->total_instrucoes++;
     switch (status->instrucao_t[status->pc].tipo) {
         case r: status->r_instrucoes++; break;
@@ -31,11 +31,11 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
     int valor_a = status->registradores->$[status->instrucao_t[status->pc].rs];
     int valor_b = status->sinal[ula_fon] == 0
                         ? status->registradores->$[status->instrucao_t[status->pc].rt]
-                        : status->instrucao_t[status->pc].immediato;
+                        : status->instrucao_t[status->pc].immediato; //mux rt ou imm
 
     status->ular = ula(valor_a, valor_b, status->ulaop);
 
-    unsigned int endereco_mem = (uint8_t)status->ular.resultado; // 8-bit wrap-around
+    unsigned int endereco_mem = (uint8_t)status->ular.resultado; 
     int8_t saida_mem = mem_data(status->mem_dados,
                                endereco_mem,
                                status->registradores->$[status->instrucao_t[status->pc].rt],
@@ -51,13 +51,14 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
             status->registradores->$[status->instrucao_t[status->pc].rt] = (int8_t)val_write;
     }
 
-    //incremento do pc so no final
+    //incremento do pc so no final e usando como o base o pc atual
     int pc_antigo = status->pc;
     if (status->sinal[inc_pc]) {
         status->pc = pc_antigo + 1;
         if (status->sinal[jump]) {
             status->pc = status->instrucao_t[pc_antigo].addr;
-        } else if (status->sinal[branch] && status->ular.zero) {
+        } else if (status->sinal[branch] && status->ular.zero) //a gente precisa do sub no beq pra verificar se é zero
+        {
             status->pc = pc_antigo + 1 + status->instrucao_t[pc_antigo].immediato;
         }
     }

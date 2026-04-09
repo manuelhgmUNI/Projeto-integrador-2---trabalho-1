@@ -11,12 +11,12 @@ typ_ulaR ula(int A, int B, typ_ulaOp operacao) {
     switch (operacao) {
         case ADD:
             inter_Resul = A + B;
-            res.overflow = (inter_Resul > 127 || inter_Resul < -128);
+            res.overflow = (inter_Resul > 127 || inter_Resul < -128);//overflow
             break;
             
         case SUB:
             inter_Resul = A - B;
-            res.overflow = (inter_Resul > 127 || inter_Resul < -128);
+            res.overflow = (inter_Resul > 127 || inter_Resul < -128);//overflow
             break;
 
         case AND:
@@ -36,7 +36,7 @@ typ_ulaR ula(int A, int B, typ_ulaOp operacao) {
             break;
     }
 
-    res.resultado = (int8_t) inter_Resul;
+    res.resultado = (int8_t) inter_Resul; //agora sim fazendo um casting para 8 bits apos obter o result intermediario
     res.zero = (res.resultado == 0);
 
     return res;

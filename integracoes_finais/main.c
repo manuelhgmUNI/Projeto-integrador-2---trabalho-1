@@ -227,6 +227,7 @@ int main()
             break;
 
         case 0:
+            estado.pc = 0;
             estado.topo_pilha = 0;
             inicia_registradores(&banco);
             memset(mem_dados.dados, 0, sizeof(mem_dados.dados));
