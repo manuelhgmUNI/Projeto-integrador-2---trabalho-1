@@ -53,7 +53,6 @@ int main()
         printf("| [11] | Gerar .asm                                         |\n");
         printf("| [0]  | Resetar PC e Registradores                         |\n");
         printf("| [123]| Sair                                               |\n");
-
         printf("+------+----------------------------------------------------+\n");
         printf("Entrada: ");
 
@@ -134,17 +133,17 @@ int main()
             break;
 
         case 6: {
-            char nome_asm[25];
-            printf("Nome do arquivo de saida .asm: ");
-            if (scanf("%24s", nome_asm) == 1) {
-                FILE *f = fopen(nome_asm, "w");
+            char buffer[25];
+            printf("Nome do arquivo de saida: ");
+            if (scanf("%24s", buffer) == 1) {
+                FILE *f = fopen(buffer, "w");
                 if (f) {
                     for (int i = 0; i < num_instrucoes; i++) {
                         fprintf(f, "%s\n", memoria_instrucoes[i].total);
                     }
                     fclose(f);
-                    printf("Arquivo .asm salvo: %s\n", nome_asm);
-                } else printf("Erro ao criar %s\n", nome_asm);
+                    printf("Arquivo salvo: %s\n", buffer);
+                } else printf("Erro ao criar %s\n", buffer);
             }
             limpa_buff();
             break;
