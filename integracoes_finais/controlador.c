@@ -1,11 +1,8 @@
 #include "structs.h"
 #include "funcoes.h"
 
-
 typ_stt *controlador(typ_stt *state, int n)
 {
-
-    
     switch (state->instrucao_t[n].tipo)
     {
     case r: // Tipo R 

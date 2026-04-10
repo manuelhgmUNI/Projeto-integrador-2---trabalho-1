@@ -15,7 +15,6 @@ int main()
     typ_stt estado;
     memset(&estado, 0, sizeof(typ_stt));
     estado.pc        = 0;
-    estado.hist_topo = 0; //hist pilha
 
     BancoRegistradores banco;
     inicia_registradores(&banco);
@@ -46,13 +45,15 @@ int main()
         printf("| [3]  | Imprimir memorias (instrucoes e dados)             |\n");
         printf("| [4]  | Imprimir banco de registradores                    |\n");
         printf("| [5]  | Imprimir estado completo (memoria + registradores) |\n");
-        printf("| [6]  | Salvar .asm                                        |\n"); //asm
+        printf("| [6]  | Salvar binario                                       |\n"); //asm
         printf("| [7]  | Salvar .dat                                        |\n"); //salvando o .dat
         printf("| [8]  | Executar Programa (Run)                            |\n"); // executa tudo em loop
-        printf("| [9]  | Executar uma instrucao (Step)                      |\n"); //no step ele avança um pc por vez e ja preenche o pc_hist
+        printf("| [9]  | Executar uma instrucao (Step)                      |\n"); 
         printf("| [10] | Voltar uma instrucao (Back)                        |\n"); //precisa refatorar, ela resgata somente o pc, mas n resgata os dados da mem e dos registradores (!!!!!)
+        printf("| [11] | Gerar .asm                                         |\n");
         printf("| [0]  | Resetar PC e Registradores                         |\n");
         printf("| [123]| Sair                                               |\n");
+
         printf("+------+----------------------------------------------------+\n");
         printf("Entrada: ");
 
@@ -69,7 +70,6 @@ int main()
             num_instrucoes = carregar_memoria_instrucoes(&memoria_instrucoes);
             estado.instrucao_t = (typ_ins*)memoria_instrucoes;
             estado.pc          = 0;
-            estado.hist_topo   = 0; 
             estado.sinal[inc_pc] = 0;
             break;
 
@@ -173,7 +173,6 @@ int main()
                 break;
             }
             printf("executando\n");
-            estado.hist_topo = 0; // clear antes do run
             while (estado.pc < num_instrucoes) {
                 executar(&estado, banco, false);
             }
@@ -194,10 +193,6 @@ int main()
                     estado.topo_pilha++; // sobe o topo da pilha       
                }else printf("limite atingido\n");
                
-
-                if (estado.hist_topo < 256)
-                    estado.pc_hist[estado.hist_topo++] = estado.pc;
-
                 printf("eexecutando pc[%d]: %s\n", estado.pc,
                        memoria_instrucoes[estado.pc].total);
 
@@ -217,8 +212,6 @@ int main()
                 banco = estado.pilha_back[estado.topo_pilha].banco_reg;
                 mem_dados = estado.pilha_back[estado.topo_pilha].mem_dados;
                 
-                if (estado.hist_topo > 0) estado.hist_topo--; 
-                
                 printf("back: restaurado para PC=%d\\n", estado.pc);
                 imprime_registradores(&banco);
             } else {
@@ -226,6 +219,25 @@ int main()
             }           
             break;
 
+        
+        case 11:
+           if (memoria_instrucoes != NULL && num_instrucoes > 0) {
+                printf("gerando :)...\n");
+                
+                asm_gerador(memoria_instrucoes, num_instrucoes);
+                
+                printf("arquivo assembly pronto\n");
+            } else {
+                printf("erro\n");
+            }
+            break;
+        case 12:
+            printf("Estatisticas: \n");
+            printf("Total de instrucoes: %s\n", estado.total_instrucoes);
+            printf("R: %i\n", estado.r_instrucoes);
+            printf("I: %i\n", estado.i_instrucoes);
+            printf("J: %i\n", estado.j_instrucoes);
+            break;
         case 0:
             estado.pc = 0;
             estado.topo_pilha = 0;

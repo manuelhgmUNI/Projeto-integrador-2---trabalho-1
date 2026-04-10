@@ -5,13 +5,15 @@
 
     // leitura de comandos bit a bit
     int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out);
-
+   
     // ULA
     typ_ulaR ula(int A, int B, typ_ulaOp operacao);
-
+    
     // controlador
     typ_stt *controlador(typ_stt *state, int n);
-
+   
+    void asm_gerador(typ_ins *ins, int n);
+   
     // banco de registradores
     void inicia_registradores(BancoRegistradores *banco);
     void escreve_registrador(BancoRegistradores *banco, int indice, int valor);

@@ -71,7 +71,6 @@
         typ_mdd *mem_dados;
         int cont_inst;
         int pc;
-        int pc_hist[256]; // historico de instrução
         int hist_topo;
 
         print pilha_back[2000]; //backup 

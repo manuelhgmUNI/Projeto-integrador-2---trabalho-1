@@ -3,19 +3,25 @@
 #include "funcoes.h"
 
 
-void asm_gerador(typ_ins *ins, int n)
+void asm_gerador(typ_ins *instrucao, int n)
 {
 
-    FILE *arquivo;
+    FILE *arquivo = NULL;
+    arquivo = fopen("saida.asm", "w");
+    if (arquivo == NULL)
+    {
+        printf("erro ao abrir o arquivo");
+        return;
+    }
 
     
     for (int k = 0; k < n; k++)
     {
         
-        switch (ins[k].tipo)
+        switch (instrucao[k].tipo)
         {
             case r: // Tipo R 
-                switch(ins[k].funct)
+                switch(instrucao[k].funct)
                 {
                     case ADD:
                         fprintf(arquivo, "add ");
@@ -33,13 +39,13 @@ void asm_gerador(typ_ins *ins, int n)
                         fprintf(arquivo, "or ");
                     break;
                 }
-                fprintf(arquivo, "$r%i, $r%i, $r%i\n", ins[k].rd, ins[k].rs, ins[k].rt);
+                fprintf(arquivo, "$r%i, $r%i, $r%i\n", instrucao[k].rd, instrucao[k].rs, instrucao[k].rt);
 
 
             break;
 
             case i: // Tipo I
-                switch (ins[k].opcode)
+                switch (instrucao[k].opcode)
                 {
                 case beq:
                     fprintf(arquivo, "beq ");
@@ -63,14 +69,18 @@ void asm_gerador(typ_ins *ins, int n)
                 default:
                     break;
                 }
-                fprintf(arquivo, "$r%i, $r%i, %i\n", ins[k].rs, ins[k].rt, ins[k].immediato);
+                fprintf(arquivo, "$r%i, $r%i, %i\n", instrucao[k].rs, instrucao[k].rt, instrucao[k].immediato);
             break;
 
             case j:
-                fprintf(arquivo, "jump %i\n",ins[k].addr);
+                fprintf(arquivo, "jump %i\n",instrucao[k].addr);
             break;
+
             default:
             break;
         }
     }
+    fclose(arquivo);
+    arquivo = NULL;
+   
 }

@@ -5,7 +5,9 @@
 
 int executar(typ_stt *status, typ_reg reg, bool clear_data)
 {
-    int val_write;
+    int val_escrita;
+    int valor_b;
+    int valor_a;
 
     if (status == NULL || status->instrucao_t == NULL || status->registradores == NULL || status->mem_dados == NULL) {
         fprintf(stderr, "errro\n");
@@ -26,36 +28,63 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
         default: break;
     }
 
+    //controle
     controlador(status, status->pc);
 
-    int valor_a = status->registradores->$[status->instrucao_t[status->pc].rs];
-    int valor_b = status->sinal[ula_fon] == 0
-                        ? status->registradores->$[status->instrucao_t[status->pc].rt]
-                        : status->instrucao_t[status->pc].immediato; //mux rt ou imm
+    //le o primeiro operando (rs)
+    valor_a = status->registradores->$[status->instrucao_t[status->pc].rs];
+    
+    //mux rt ou imm para o segundo(ula_fon)
+    if (status->sinal[ula_fon] == 0)  
+    {
 
+        valor_b = status->registradores->$[status->instrucao_t[status->pc].rt];//rt
+
+    } else
+    {
+        
+        valor_b = status->instrucao_t[status->pc].immediato;//imm
+    }                                                                             
+
+    //ula
     status->ular = ula(valor_a, valor_b, status->ulaop);
 
+    //acesso a memoria
     unsigned int endereco_mem = (uint8_t)status->ular.resultado; 
+    //esc_mem | mem_reg
     int8_t saida_mem = mem_data(status->mem_dados,
                                endereco_mem,
                                status->registradores->$[status->instrucao_t[status->pc].rt],
                                status->sinal[esc_mem],
                                status->sinal[mem_reg],
                                clear_data);
-
+    
+    //esc_reg
     if (status->sinal[esc_reg]) {
-        val_write = status->sinal[mem_reg] ? saida_mem : status->ular.resultado;
-        if (status->sinal[reg_des])
-            status->registradores->$[status->instrucao_t[status->pc].rd] = (int8_t)val_write;
-        else
-            status->registradores->$[status->instrucao_t[status->pc].rt] = (int8_t)val_write;
+        if (status->sinal[mem_reg]) 
+        {
+            val_escrita = saida_mem;
+        } else 
+        {
+            val_escrita = status->ular.resultado;
+        }
+
+        if (status->sinal[reg_des]) 
+        {
+            status->registradores->$[status->instrucao_t[status->pc].rd] = (int8_t)val_escrita;
+        } else 
+        {
+            status->registradores->$[status->instrucao_t[status->pc].rt] = (int8_t)val_escrita;
+        }
     }
 
     //incremento do pc so no final e usando como o base o pc atual
     int pc_antigo = status->pc;
-    if (status->sinal[inc_pc]) {
-        status->pc = pc_antigo + 1;
-        if (status->sinal[jump]) {
+    if (status->sinal[inc_pc]) 
+    {
+        status->pc = pc_antigo + 1; //pc +1
+        if (status->sinal[jump]) 
+        {
             status->pc = status->instrucao_t[pc_antigo].addr;
         } else if (status->sinal[branch] && status->ular.zero) //a gente precisa do sub no beq pra verificar se é zero
         {
