@@ -15,9 +15,14 @@ void asm_gerador(typ_ins *instrucao, int n)
     }
 
     
-    for (int k = 0; k < n; k++)
+    for (int k = 0; k < 256; k++)
     {
         
+        if (instrucao[k].instrucao_bruta == 0) {
+            fprintf(arquivo, "add $r0, $r0, $r0\n");
+            continue; 
+        }
+
         switch (instrucao[k].tipo)
         {
             case r: // Tipo R 

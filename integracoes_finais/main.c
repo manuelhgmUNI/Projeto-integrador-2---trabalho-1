@@ -45,7 +45,7 @@ int main()
         printf("| [3]  | Imprimir memorias (instrucoes e dados)             |\n");
         printf("| [4]  | Imprimir banco de registradores                    |\n");
         printf("| [5]  | Imprimir estado completo (memoria + registradores) |\n");
-        printf("| [6]  | Salvar binario                                       |\n"); //asm
+        printf("| [6]  | Salvar binario                                     |\n"); //asm
         printf("| [7]  | Salvar .dat                                        |\n"); //salvando o .dat
         printf("| [8]  | Executar Programa (Run)                            |\n"); // executa tudo em loop
         printf("| [9]  | Executar uma instrucao (Step)                      |\n"); 
@@ -93,28 +93,25 @@ int main()
         }
 
         case 3:
-            if (memoria_instrucoes == NULL) {
-                printf("Erro\n");
-            } else {
-                printf("\nmemoria de instrucoes\n");
-                for (int i = 0; i < num_instrucoes; i++) {
-                    printf("[%03d] %s | Op: %d | Funct: %d\n", i,
-                           memoria_instrucoes[i].total,
-                           memoria_instrucoes[i].opcode,
-                           memoria_instrucoes[i].funct);
-                }
-
-                printf("\nmem de dados \n");
-                int tem = 0;
-                for (int i = 0; i < 256; i++) {
-                    if (mem_dados.dados[i] != 0) {
-                        printf("[%03d] = %d\n", i, mem_dados.dados[i]);
-                        tem = 1;
-                    }
-                }
-                if (!tem) printf("(vazia)\n");
+    
+            printf("\nmemoria de instrucoes\n");
+            for (int i = 0; i < 255; i++) {
+                printf("[%03d] %s",i,memoria_instrucoes[i].total);
+                if (memoria_instrucoes[i].total[0] == 0) 
+                    printf("0000000000000000");
+                printf(" | Op: %d | Funct: %d\n", 
+                    memoria_instrucoes[i].opcode,
+                    memoria_instrucoes[i].funct);
             }
-            break;
+
+            printf("\nmem de dados \n");
+                    
+            for (int i = 0; i < 256; i++) 
+                printf("[%03d] = %d\n", i, mem_dados.dados[i]);
+            
+                    
+                
+        break;
 
         case 4:
             imprime_registradores(&banco);
@@ -124,11 +121,9 @@ int main()
             printf("\n  ESTADO COMPLETO \n");
             imprime_registradores(&banco);
             printf("\nmem de dados:\n");
-            for (int i = 0; i < 256; i++) {
-                if (mem_dados.dados[i] != 0) {
-                    printf("[%03d]=%d ", i, mem_dados.dados[i]);
-                }
-            }
+            for (int i = 0; i < 256; i++) 
+                printf("[%03d] = %d\n", i, mem_dados.dados[i]);
+
             printf("\n");
             break;
 
@@ -172,32 +167,36 @@ int main()
                 break;
             }
             printf("executando\n");
-            while (estado.pc < num_instrucoes) {
+            
+            do
+            {
                 executar(&estado, banco, false);
-            }
+            } while (estado.pc != 0);
+            
             printf("finalizado PC: %d\n", estado.pc);
             break;
 
         case 9: //step
     
-            if (estado.pc >= num_instrucoes) {
-                printf("fim do programa .\n");
-            } else {
                 // backup do proximo estado para Back
-               if (estado.topo_pilha < 2000)
-               {
+            if (estado.topo_pilha < 2000){
                     estado.pilha_back[estado.topo_pilha].pc = estado.pc;
                     estado.pilha_back[estado.topo_pilha].banco_reg = banco;
                     estado.pilha_back[estado.topo_pilha].mem_dados = mem_dados;
                     estado.topo_pilha++; // sobe o topo da pilha       
                }else printf("limite atingido\n");
                
-                printf("eexecutando pc[%d]: %s\n", estado.pc,
-                       memoria_instrucoes[estado.pc].total);
-
-                executar(&estado, banco, false);
-                imprime_registradores(&banco);
+            printf("eexecutando pc[%d]: %s\n", estado.pc,
+                    memoria_instrucoes[estado.pc].total);
+                
+            if (estado.instrucao_t[estado.pc].instrucao_bruta == 0)
+            {
+                printf("pc[%d] 0000000000000000 || add $r0, $r0, $r0\n", estado.pc);
             }
+            
+            executar(&estado, banco, false);
+            imprime_registradores(&banco);
+            
             break;
 
         case 10:
@@ -220,15 +219,10 @@ int main()
 
         
         case 11:
-           if (memoria_instrucoes != NULL && num_instrucoes > 0) {
                 printf("gerando :)...\n");
-                
                 asm_gerador(memoria_instrucoes, num_instrucoes);
-                
                 printf("arquivo assembly pronto\n");
-            } else {
-                printf("erro\n");
-            }
+   
             break;
         case 12:
             printf("Estatisticas: \n");

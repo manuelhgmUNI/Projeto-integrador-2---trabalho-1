@@ -70,7 +70,7 @@
         typ_reg *registradores;
         typ_mdd *mem_dados;
         int cont_inst;
-        int pc;
+        unsigned char pc;
         int hist_topo;
 
         print pilha_back[2000]; //backup 
