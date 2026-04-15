@@ -8,7 +8,7 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
     if (status->sinal[inc_pc])
     {
         status->pc += 1;
-        if (status->sinal[branch] = status->ular.zero)
+        if (status->sinal[branch] == status->ular.zero)
             status->pc += status->instrucao_t[status[status->cont_inst].pc].immediato;
         else if (status->sinal[jump])
             status->pc = status->instrucao_t[status[status->cont_inst].pc].addr;
