@@ -3,11 +3,11 @@
 #include "funcoes.h"
 
 
-void asm_gerador(typ_ins *instrucao, int n)
+void asm_gerador(typ_ins *instrucao, int n, char *nome_arq)
 {
 
     FILE *arquivo = NULL;
-    arquivo = fopen("saida.asm", "w");
+    arquivo = fopen(nome_arq, "w");
     if (arquivo == NULL)
     {
         printf("erro ao abrir o arquivo");

@@ -80,6 +80,7 @@
         int r_instrucoes;
         int i_instrucoes;
         int j_instrucoes;
+        int nop_instrucoes;
 
         bool sinal[8];
         typ_ulaOp ulaop;

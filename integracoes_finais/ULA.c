@@ -20,12 +20,6 @@ typ_ulaR ula(int A, int B, typ_ulaOp operacao) {
         case OR:
             inter_Resul = A | B;
             break;
-        case SLT:
-            if (A < B)
-                inter_Resul = 1;
-            else
-                inter_Resul = 0;
-            break;
     }
 
     res.resultado = (int8_t) inter_Resul; //agora sim fazendo um casting para 8 bits apos obter o result intermediario, p verificar corretamente o overflow

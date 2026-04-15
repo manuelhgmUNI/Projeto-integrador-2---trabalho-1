@@ -21,11 +21,17 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
 
     //stats mas n testei ainda, pra deixar mais didatico como o julio pediu
     status->total_instrucoes++;
-    switch (status->instrucao_t[status->pc].tipo) {
-        case r: status->r_instrucoes++; break;
-        case i: status->i_instrucoes++; break;
-        case j: status->j_instrucoes++; break;
-        default: break;
+
+    if (status->instrucao_t[status->pc].instrucao_bruta == 0)
+    {
+        status->nop_instrucoes++;
+    }else{
+            switch (status->instrucao_t[status->pc].tipo) {
+            case r: status->r_instrucoes++; break;
+            case i: status->i_instrucoes++; break;
+            case j: status->j_instrucoes++; break;
+            default: break;
+        }
     }
 
     //controle

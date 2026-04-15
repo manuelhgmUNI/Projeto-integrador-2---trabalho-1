@@ -31,6 +31,7 @@ int main()
     estado.r_instrucoes = 0;
     estado.i_instrucoes = 0;
     estado.j_instrucoes = 0;
+    estado.nop_instrucoes = 0;
 
     typ_instrucaoSep *memoria_instrucoes = NULL;
 
@@ -51,7 +52,8 @@ int main()
         printf("| [9]  | Executar uma instrucao (Step)                      |\n"); 
         printf("| [10] | Voltar uma instrucao (Back)                        |\n"); //precisa refatorar, ela resgata somente o pc, mas n resgata os dados da mem e dos registradores (!!!!!)
         printf("| [11] | Gerar .asm                                         |\n");
-        printf("| [0]  | Resetar PC e Registradores                         |\n");
+        printf("| [12] | Gerar estatisticas                                 |\n");
+        printf("| [0]  | Reset                                              |\n");
         printf("| [123]| Sair                                               |\n");
         printf("+------+----------------------------------------------------+\n");
         printf("Entrada: ");
@@ -186,7 +188,7 @@ int main()
                     estado.topo_pilha++; // sobe o topo da pilha       
                }else printf("limite atingido\n");
                
-            printf("eexecutando pc[%d]: %s\n", estado.pc,
+            printf("executando pc[%d]: %s\n", estado.pc,
                     memoria_instrucoes[estado.pc].total);
                 
             if (estado.instrucao_t[estado.pc].instrucao_bruta == 0)
@@ -219,23 +221,33 @@ int main()
 
         
         case 11:
-                printf("gerando :)...\n");
-                asm_gerador(memoria_instrucoes, num_instrucoes);
-                printf("arquivo assembly pronto\n");
+                char nome_arq[20];
+                printf("Digite o nome do arquivo a ser gerado (ex: meu_codigo.asm): ");
+                scanf("%19s", nome_arq);
+                 printf("gerando :)...\n");
+                asm_gerador(memoria_instrucoes, num_instrucoes, nome_arq);
+                printf("arquivo .asm pronto\n");
    
             break;
         case 12:
             printf("Estatisticas: \n");
-            printf("Total de instrucoes: %s\n", estado.total_instrucoes);
+            printf("Total de instrucoes: %d\n", estado.total_instrucoes);
             printf("R: %i\n", estado.r_instrucoes);
             printf("I: %i\n", estado.i_instrucoes);
             printf("J: %i\n", estado.j_instrucoes);
+            printf("Somas 0: %i\n", estado.nop_instrucoes);
             break;
         case 0:
             estado.pc = 0;
             estado.topo_pilha = 0;
+            estado.nop_instrucoes=0;
             inicia_registradores(&banco);
             memset(mem_dados.dados, 0, sizeof(mem_dados.dados));
+            estado.total_instrucoes = 0;
+            estado.r_instrucoes = 0;
+            estado.i_instrucoes = 0;
+            estado.j_instrucoes = 0;
+            estado.nop_instrucoes = 0;
             printf("foi resetado :) .\n");
             break;
 
