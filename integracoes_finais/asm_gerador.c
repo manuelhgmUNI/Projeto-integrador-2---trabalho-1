@@ -2,7 +2,6 @@
 #include "structs.h"
 #include "funcoes.h"
 
-
 void asm_gerador(typ_ins *instrucao, int n, char *nome_arq)
 {
 
@@ -14,10 +13,8 @@ void asm_gerador(typ_ins *instrucao, int n, char *nome_arq)
         return;
     }
 
-    
     for (int k = 0; k < 256; k++)
     {
-        
         if (instrucao[k].instrucao_bruta == 0) {
             fprintf(arquivo, "add $r0, $r0, $r0\n");
             continue; 
@@ -45,8 +42,6 @@ void asm_gerador(typ_ins *instrucao, int n, char *nome_arq)
                     break;
                 }
                 fprintf(arquivo, "$r%i, $r%i, $r%i\n", instrucao[k].rd, instrucao[k].rs, instrucao[k].rt);
-
-
             break;
 
             case i: // Tipo I

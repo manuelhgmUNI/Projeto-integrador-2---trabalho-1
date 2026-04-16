@@ -111,8 +111,6 @@ int main()
             for (int i = 0; i < 256; i++) 
                 printf("[%03d] = %d\n", i, mem_dados.dados[i]);
             
-                    
-                
         break;
 
         case 4:
@@ -179,28 +177,72 @@ int main()
             break;
 
         case 9: //step
-    
-                // backup do proximo estado para Back
-            if (estado.topo_pilha < 2000){
-                    estado.pilha_back[estado.topo_pilha].pc = estado.pc;
+                // backup para backstep
+                if (estado.topo_pilha < 2000) {
+                    estado.pilha_back[estado.topo_pilha].pc       = estado.pc;
                     estado.pilha_back[estado.topo_pilha].banco_reg = banco;
                     estado.pilha_back[estado.topo_pilha].mem_dados = mem_dados;
-                    estado.topo_pilha++; // sobe o topo da pilha       
-               }else printf("limite atingido\n");
-               
-            printf("executando pc[%d]: %s\n", estado.pc,
-                    memoria_instrucoes[estado.pc].total);
-                
-            if (estado.instrucao_t[estado.pc].instrucao_bruta == 0)
-            {
-                printf("pc[%d] 0000000000000000 || add $r0, $r0, $r0\n", estado.pc);
-            }
-            
-            executar(&estado, banco, false);
-            imprime_registradores(&banco);
-            
-            break;
+                    estado.topo_pilha++;
+                } else {
+                    printf("limite do backstep atingido\n");
+                }
 
+                int pc_antes = estado.pc;
+
+                //linha asm
+                char linha_asm[40] = {0};
+                if (estado.instrucao_t[pc_antes].instrucao_bruta == 0) {
+                    sprintf(linha_asm, "add $r0, $r0, $r0  (NOP)");
+                } else {
+                    asm_gerador_char(linha_asm, &estado.instrucao_t[pc_antes]);
+                    // \n
+                    linha_asm[strcspn(linha_asm, "\n")] = '\0';
+                }
+
+                printf("\n+--[ STEP ]------------------------------------------+\n");
+                printf("| PC: %-3d | Binario: %-16s            |\n",
+                    pc_antes, memoria_instrucoes[pc_antes].total);
+                printf("| ASM: %-45s |\n", linha_asm);
+                printf("+----------------------------------------------------+\n");
+
+                // salva registradores antes para comparar depois
+                int8_t reg_antes[8];
+                for (int i = 0; i < 8; i++) reg_antes[i] = banco.$[i];
+
+                executar(&estado, banco, false);
+
+                // resultado da ULA
+                printf("| ULA -> resultado: %-4d | zero: %s | overflow: %s  |\n",
+                    estado.ular.resultado,
+                    estado.ular.zero     ? "sim" : "nao",
+                    estado.ular.overflow ? "sim" : "nao");
+
+                // PC apos execucao
+                printf("| PC: %d -> %d", pc_antes, estado.pc);
+                if (estado.sinal[branch] && estado.ular.zero)
+                    printf("  (branch tomado)");
+                else if (estado.sinal[jump])
+                    printf("  (jump)");
+                else
+                    printf("  (+1)");
+                printf("\n+----------------------------------------------------+\n");
+
+                // mostra só registradores que mudaram
+                printf("| Registradores alterados:                           |\n");
+                bool algum = false;
+                for (int i = 0; i < 8; i++) {
+                    if (banco.$[i] != reg_antes[i]) {
+                        printf("|   $r%d: %d -> %d\n", i, reg_antes[i], banco.$[i]);
+                        algum = true;
+                    }
+                }
+                if (!algum) printf("|   (nenhum)\n");
+                printf("+----------------------------------------------------+\n");
+
+                imprime_registradores(&banco);
+
+                break;
+                
         case 10:
             
             if (estado.topo_pilha > 0) {

@@ -4,7 +4,6 @@
 #include <string.h>
 #include "structs.h"
 
-
 int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out)
 {
     char nome_arquivo[25];
@@ -57,7 +56,7 @@ int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out)
             mem[k].tipo = r;
         } else if (mem[k].opcode == addi || mem[k].opcode == beq ||
                    mem[k].opcode == lw   || mem[k].opcode == sw) {
-            mem[k].tipo = (enum tipos_de_instrucao)2; //tava dando conflito por causa do i e agr deixei explicito com o casting
+            mem[k].tipo = (enum tipos_de_instrucao)2; 
         } else if (mem[k].opcode == 2) {
             mem[k].tipo = j;
         }

@@ -13,6 +13,7 @@
     typ_stt *controlador(typ_stt *state, int n);
    
     void asm_gerador(typ_ins *ins, int n,char *nome_arq);
+    int asm_gerador_char(char *asembly, typ_ins *instrucao);
    
     // banco de registradores
     void inicia_registradores(BancoRegistradores *banco);

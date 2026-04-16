@@ -21,7 +21,7 @@ typ_stt *controlador(typ_stt *state, int n)
         switch (state->instrucao_t[n].opcode)
         {
         case beq:
-            state->ulaop = SUB; //no beq é sub e nao and por isso eu mudei !!!!!!!
+            state->ulaop = SUB; 
             state->sinal[esc_mem] = 0;
             state->sinal[esc_reg] = 0;
             state->sinal[mem_reg] = 0;

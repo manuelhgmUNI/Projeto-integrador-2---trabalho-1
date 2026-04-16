@@ -2,7 +2,6 @@
 #include "funcoes.h"
 #include "structs.h"
 
-
 int executar(typ_stt *status, typ_reg reg, bool clear_data)
 {
     int val_escrita;
@@ -12,14 +11,13 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
     if (status == NULL || status->instrucao_t == NULL || status->registradores == NULL || status->mem_dados == NULL) {
         fprintf(stderr, "errro\n");
         return -1;
-    }//tratamento de erro  pq tava dando segmentation fault
+    }
 
     if (status->pc < 0 || status->pc >= 256) {
         fprintf(stderr, "erro!\n");
         return -1;
     }//ver se o pc tem um valor valido
 
-    //stats mas n testei ainda, pra deixar mais didatico como o julio pediu
     status->total_instrucoes++;
 
     if (status->instrucao_t[status->pc].instrucao_bruta == 0)
@@ -92,7 +90,7 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
         if (status->sinal[jump]) 
         {
             status->pc = status->instrucao_t[pc_antigo].addr;
-        } else if (status->sinal[branch] && status->ular.zero) //a gente precisa do sub no beq pra verificar se é zero
+        } else if (status->sinal[branch] && status->ular.zero) 
         {
             status->pc = pc_antigo + 1 + status->instrucao_t[pc_antigo].immediato;
         }
