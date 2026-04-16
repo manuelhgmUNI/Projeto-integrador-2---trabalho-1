@@ -1,6 +1,6 @@
-# Simulador de Processador (MIPS-like) em C
+# Simulador Mini MIPS - 8 bits em C
 
-Um emulador didático de um processador desenvolvido em linguagem C. Este projeto simula o caminho de dados (datapath) e o ciclo de instrução de uma arquitetura baseada no MIPS, incluindo o controle de sinais, gerenciamento de memória, banco de registradores e a execução de instruções dos tipos R, I e J.
+Um emulador didático de um processador desenvolvido em linguagem C. Este projeto simula o caminho de dados (datapath) e o ciclo de instrução de uma arquitetura baseada no Mini MIPS 8 bits, incluindo o controle de sinais, gerenciamento de memória, banco de registradores e a execução de instruções dos tipos R, I e J.
 
 ---
 
