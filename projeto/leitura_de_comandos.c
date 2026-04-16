@@ -1,11 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<math.h>
+#include"leitura_de_comandos.h"
 
 int leitura_binario(char *bin, int inicio, int final, int sinal);
 
 
-int main()
+int leitura_memoria()
 {
     enum tipos_de_instrução
     {
@@ -37,6 +37,7 @@ int main()
                 1000 => BEQ => 8
                 0010 => J => 2
                 */
+    str_i *instru;
 
     FILE *Mem_ins = fopen("memoria1.mem", "r");
     int linhas = 1;
