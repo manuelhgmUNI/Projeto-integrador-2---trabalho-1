@@ -85,6 +85,7 @@
         bool sinal[8];
         typ_ulaOp ulaop;
         typ_ulaR ular;
+        bool estouro;
     }typ_stt;
     enum
     {

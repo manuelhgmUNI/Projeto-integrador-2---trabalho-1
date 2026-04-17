@@ -32,6 +32,7 @@ int main()
     estado.i_instrucoes = 0;
     estado.j_instrucoes = 0;
     estado.nop_instrucoes = 0;
+    estado.estouro = false;
 
     typ_instrucaoSep *memoria_instrucoes = NULL;
 
@@ -166,14 +167,14 @@ int main()
                 printf("erro\n");
                 break;
             }
+            estado.estouro = false;
             printf("executando\n");
-            
             do
             {
                 executar(&estado, banco, false);
-            } while (estado.pc != 0);
-            
-            printf("finalizado PC: %d\n", estado.pc);
+            } while (!estado.estouro);
+            imprime_registradores(&banco);
+            printf("finalizado PC: %d\n", estado.pc);            
             break;
 
         case 9: //step
@@ -192,7 +193,7 @@ int main()
                 //linha asm
                 char linha_asm[40] = {0};
                 if (estado.instrucao_t[pc_antes].instrucao_bruta == 0) {
-                    sprintf(linha_asm, "add $r0, $r0, $r0  (NOP)");
+                    sprintf(linha_asm, "add $r0, $r0, $r0  ");
                 } else {
                     asm_gerador_char(linha_asm, &estado.instrucao_t[pc_antes]);
                     // \n

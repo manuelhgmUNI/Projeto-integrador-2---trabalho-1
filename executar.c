@@ -84,17 +84,30 @@ int executar(typ_stt *status, typ_reg reg, bool clear_data)
 
     //incremento do pc so no final e usando como o base o pc atual
     int pc_antigo = status->pc;
-    if (status->sinal[inc_pc]) 
+    status->estouro = false;
+    if (status->sinal[inc_pc])
     {
-        status->pc = pc_antigo + 1; //pc +1
-        if (status->sinal[jump]) 
+        if (status->sinal[jump])
         {
+           
             status->pc = status->instrucao_t[pc_antigo].addr;
-        } else if (status->sinal[branch] && status->ular.zero) 
+        }
+        else if (status->sinal[branch] && status->ular.zero)
         {
-            status->pc = pc_antigo + 1 + status->instrucao_t[pc_antigo].immediato;
+            int destino = pc_antigo + 1 + status->instrucao_t[pc_antigo].immediato;
+            status->pc = (unsigned char)destino; 
+        }
+        else
+        {
+            if (pc_antigo == 255){
+                status->pc     = 0;
+                status->estouro = true; // fim do espaco de instrucoes
+            }
+            else
+            {
+                status->pc = pc_antigo + 1;
+            }
         }
     }
-
     return 0;
 }
