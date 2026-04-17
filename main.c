@@ -172,7 +172,7 @@ int main()
             do
             {
                 executar(&estado, banco, false);
-            } while (!estado.estouro);
+            } while (estado.pc != 255);
             imprime_registradores(&banco);
             printf("finalizado PC: %d\n", estado.pc);            
             break;
