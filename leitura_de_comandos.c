@@ -64,7 +64,7 @@ int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out)
         char asm_buffer[30];
         if (mem[k].instrucao_bruta == 0) {
             sprintf(asm_buffer, "add $r0, $r0, $r0");
-            printf("instrucao [%3d]: %s | Asm: %-20s | Fatiado -> (Vazio)\n", 
+            printf("instrucao [%3d]: %s | Asm: %-20s | campos -> (Vazio)\n", 
                    k, mem[k].total, asm_buffer);
             count++;
             continue; 
@@ -80,7 +80,7 @@ int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out)
                     case OR:  sprintf(asm_buffer, "or $r%d, $r%d, $r%d",  mem[k].rd, mem[k].rs, mem[k].rt); break;
                     default:  sprintf(asm_buffer, "??? $r%d, $r%d, $r%d", mem[k].rd, mem[k].rs, mem[k].rt); break;
                 }
-                printf("instrucao [%3d]: %s | Asm: %-20s | Fatiado -> Op:%2d  rs:%d  rt:%d  rd:%d  funct:%d\n", 
+                printf("instrucao [%3d]: %s | Asm: %-20s | campos -> Op:%2d  rs:%d  rt:%d  rd:%d  funct:%d\n", 
                        k, mem[k].total, asm_buffer, mem[k].opcode, mem[k].rs, mem[k].rt, mem[k].rd, mem[k].funct);
                 break;
 
@@ -95,25 +95,25 @@ int carregar_memoria_instrucoes(typ_instrucaoSep **mem_out)
                     sprintf(asm_buffer, "beq $r%d, $r%d, %d", mem[k].rs, mem[k].rt, mem[k].immediato);
                 } 
                 else if (mem[k].opcode == addi) {
-                    sprintf(asm_buffer, "addi $r%d, $r%d, %d", mem[k].rs, mem[k].rt, mem[k].immediato);
+                    sprintf(asm_buffer, "addi $r%d, $r%d, %d", mem[k].rt, mem[k].rs, mem[k].immediato);
                 } 
                 else {
                     sprintf(asm_buffer, "??? $r%d, $r%d, %d", mem[k].rs, mem[k].rt, mem[k].immediato);
                 }
 
-                printf("instrucao [%3d]: %s | Asm: %-20s | Fatiado -> Op:%2d  rs:%d  rt:%d  imm:%-4d\n", 
+                printf("instrucao [%3d]: %s | Asm: %-20s | campos -> Op:%2d  rs:%d  rt:%d  imm:%-4d\n", 
                        k, mem[k].total, asm_buffer, mem[k].opcode, mem[k].rs, mem[k].rt, mem[k].immediato);
                 break;
 
             case j: // Tipo J
                 sprintf(asm_buffer, "jump %d", mem[k].addr);
-                printf("instrucao [%3d]: %s | Asm: %-20s | Fatiado -> Op:%2d  addr:%d\n", 
+                printf("instrucao [%3d]: %s | Asm: %-20s | campos -> Op:%2d  addr:%d\n", 
                        k, mem[k].total, asm_buffer, mem[k].opcode, mem[k].addr);
                 break;
 
             default:
                 sprintf(asm_buffer, "Desconhecido");
-                printf("instrucao [%3d]: %s | Asm: %-20s | Fatiado -> Op:%2d\n", 
+                printf("instrucao [%3d]: %s | Asm: %-20s | campos -> Op:%2d\n", 
                        k, mem[k].total, asm_buffer, mem[k].opcode);
                 break;
         }

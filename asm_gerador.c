@@ -45,32 +45,32 @@ void asm_gerador(typ_ins *instrucao, int n, char *nome_arq)
             break;
 
             case i: // Tipo I
-                switch (instrucao[k].opcode)
-                {
-                case beq:
-                    fprintf(arquivo, "beq ");
-                break;
+                    switch (instrucao[k].opcode)
+                    {
+                    case beq:
+                        //beq
+                        fprintf(arquivo, "beq $r%i, $r%i, %i\n", instrucao[k].rs, instrucao[k].rt, instrucao[k].immediato);
+                        break;
+
+                    case addi:    
+                        // addi
+                        fprintf(arquivo, "addi $r%i, $r%i, %i\n", instrucao[k].rt, instrucao[k].rs, instrucao[k].immediato);
+                        break;    
+
+                    case lw:
+                        // lw rt, imm(rs)
+                        fprintf(arquivo, "lw $r%i, %i($r%i)\n", instrucao[k].rt, instrucao[k].immediato, instrucao[k].rs);
+                        break;
+
+                    case sw:
+                        //sw rt, imm(rs)
+                        fprintf(arquivo, "sw $r%i, %i($r%i)\n", instrucao[k].rt, instrucao[k].immediato, instrucao[k].rs);
+                        break;
                     
-
-                case addi:    
-                    fprintf(arquivo, "addi ");
-                break;    
-
-
-                case lw:
-                    fprintf(arquivo, "lw ");
+                    default:
+                        break;
+                    }
                 break;
-
-
-                case sw:
-                    fprintf(arquivo, "sw ");
-                break;
-                
-                default:
-                    break;
-                }
-                fprintf(arquivo, "$r%i, $r%i, %i\n", instrucao[k].rs, instrucao[k].rt, instrucao[k].immediato);
-            break;
 
             case j:
                 fprintf(arquivo, "jump %i\n",instrucao[k].addr);

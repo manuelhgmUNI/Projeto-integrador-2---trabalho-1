@@ -41,28 +41,28 @@ int asm_gerador_char(char *asembly, typ_ins *instrucao)
                 switch ((*instrucao).opcode)
                 {
                 case beq:
-                    sprintf(asembly, "beq ");
+                    sprintf(asembly, "beq $r%i, $r%i, %i\n", (*instrucao).rs, (*instrucao).rt, (*instrucao).immediato);
                 break;
                     
 
                 case addi:    
-                    sprintf(asembly, "addi ");
+                    sprintf(asembly, "addi $r%i, $r%i, %i\n", (*instrucao).rt, (*instrucao).rs, (*instrucao).immediato);
                 break;    
 
 
                 case lw:
-                    sprintf(asembly, "lw ");
+                    sprintf(asembly, "lw $r%i, %i($r%i)\n", (*instrucao).rt, (*instrucao).immediato, (*instrucao).rs);
                 break;
 
 
                 case sw:
-                    sprintf(asembly, "sw ");
+                    sprintf(asembly, "sw $r%i, %i($r%i)\n", (*instrucao).rt, (*instrucao).immediato, (*instrucao).rs);
                 break;
                 
                 default:
                     break;
                 }
-                sprintf(asembly + strlen(asembly), "$r%i, $r%i, %i\n", (*instrucao).rs, (*instrucao).rt, (*instrucao).immediato);
+                
             break;
 
             case j:

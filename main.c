@@ -255,10 +255,10 @@ int main()
                 banco = estado.pilha_back[estado.topo_pilha].banco_reg;
                 mem_dados = estado.pilha_back[estado.topo_pilha].mem_dados;
                 
-                printf("back: restaurado para PC=%d\\n", estado.pc);
+                printf("back: restaurado para PC=%d\n", estado.pc);
                 imprime_registradores(&banco);
             } else {
-                printf("nao tem instrucao anterior para voltar\\n");
+                printf("nao tem instrucao anterior para voltar\n");
             }           
             break;
 
